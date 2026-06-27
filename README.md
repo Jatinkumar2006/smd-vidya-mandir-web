@@ -1,6 +1,7 @@
-# SMD Digital Campus
+# SMD Digital Campus 🎓
 
-AI-Powered School Management & Information Platform for Shree Mangal Chand Didwania Vidya Mandir, Sikar, Rajasthan.
+**AI-Powered School Management & Information Platform**  
+Shree Mangal Chand Didwania Vidya Mandir (CBSE), Khori Brahmanan, Raghunathgarh, Sikar, Rajasthan
 
 **Built by:** Jatin Kumar | B.E. AI & Data Science, MBM University Jodhpur
 
@@ -8,14 +9,138 @@ AI-Powered School Management & Information Platform for Shree Mangal Chand Didwa
 
 ## Tech Stack
 
-| Layer      | Technology                         |
-|------------|------------------------------------|
-| Frontend   | React.js + Vite + Tailwind CSS     |
-| Backend    | Node.js + Express.js               |
-| Database   | PostgreSQL (Neon - Serverless)     |
-| Auth       | JWT + bcryptjs                     |
-| AI         | Google Gemini API                  |
-| Deploy     | Vercel (FE) + Render (BE)          |
+| Layer      | Technology                          |
+|------------|-------------------------------------|
+| Frontend   | React.js 18 + Vite + Tailwind CSS   |
+| Backend    | Node.js + Express.js                |
+| Database   | **MySQL** (local / cloud)           |
+| Auth       | JWT + bcryptjs                      |
+| AI         | **Groq API** (llama3-8b-8192) — FREE |
+| Deploy     | Vercel (FE) + Render (BE)           |
+
+---
+
+## ⚡ Quick Start
+
+### 1. Clone & Setup
+
+```bash
+git clone <your-repo-url>
+cd smd-digital-campus
+```
+
+### 2. Database Setup (MySQL)
+
+Using **XAMPP**, **MySQL Workbench**, or any MySQL client:
+
+```sql
+-- In MySQL Workbench or phpMyAdmin:
+-- 1. Open the file: backend/src/config/schema.sql
+-- 2. Run it — this creates the database, all tables, and seeds demo users
+```
+
+**Demo accounts (password: `admin123` for all):**
+| Role    | Email                      |
+|---------|----------------------------|
+| Admin   | admin@smdschool.in         |
+| Teacher | teacher@smdschool.in       |
+| Student | student@smdschool.in       |
+
+### 3. Backend Setup
+
+```bash
+cd backend
+npm install
+
+# Copy and edit the env file
+copy .env.example .env
+```
+
+Edit `backend/.env`:
+```env
+PORT=5000
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=          # your MySQL root password (blank for XAMPP default)
+DB_NAME=smd_campus
+JWT_SECRET=change_this_to_something_secure
+GROQ_API_KEY=gsk_...  # Get free key at https://console.groq.com
+CLIENT_URL=http://localhost:5173
+```
+
+```bash
+npm run dev
+# ✅ SMD Backend running on port 5000 | DB: MySQL | AI: Groq
+```
+
+### 4. Frontend Setup
+
+```bash
+cd frontend
+npm install
+
+# Copy env file
+copy .env.example .env
+# .env content: VITE_API_URL=http://localhost:5000/api
+
+npm run dev
+# Open http://localhost:5173
+```
+
+---
+
+## Getting a Free Groq API Key
+
+1. Go to [https://console.groq.com](https://console.groq.com)
+2. Sign up / Log in (it's free!)
+3. Go to **API Keys** → **Create API Key**
+4. Copy the key and paste into `backend/.env` as `GROQ_API_KEY=gsk_...`
+
+---
+
+## Features
+
+### Public Website
+- 🏠 Home — Hero, stats, about, notices (live from DB), CTA
+- 📚 Academics — Classes I-XII, subjects, highlights
+- 🏫 Facilities — Library, Labs, Digital Learning, Sports
+- 🖼️ Gallery — Category filter, image grid, lightbox
+- 📝 Admissions — Form → database → admin review workflow
+- ☎️ Contact — Form → database
+- 📄 MPD — CBSE Mandatory Public Disclosure
+
+### Admin Panel (`/admin`)
+- 📊 Dashboard — Live stats (students, pending admissions, notices, gallery)
+- 👥 Students — Full CRUD table (add/edit/delete with modal)
+- 📋 Admissions — Review applications, approve/reject with one click
+- 🔔 Notices — Create + AI-powered notice generator (Groq)
+- 🖼️ Gallery — Add/remove gallery items by category
+
+### Teacher Portal (`/teacher`)
+- 📝 Marks Entry — Select class + subject + exam → editable table → save
+- ✅ Attendance — Daily attendance marking (present/absent/late) with batch save
+- 🤖 AI Remark Generator per student
+
+### Student Portal (`/student`)
+- 📊 Dashboard — Average score, attendance %, recent marks
+- 📜 Results — Marks with CBSE grading (A1-E), progress bars, exam filter
+- 📅 Attendance — Month-by-month calendar, color-coded days, circular meter
+
+### Parent Portal (`/parent`)
+- 📣 Latest school notices
+- Contact school links
+
+---
+
+## Git Safety
+
+Your original code is saved as the first commit. To restore it at any time:
+
+```bash
+git log --oneline        # see all commits
+git checkout <commit-id> # restore to any point
+```
 
 ---
 
@@ -23,71 +148,35 @@ AI-Powered School Management & Information Platform for Shree Mangal Chand Didwa
 
 ```
 smd-digital-campus/
-├── frontend/          # React + Vite app
+├── frontend/              # React + Vite app
 │   └── src/
-│       ├── components/
-│       │   ├── common/     # ProtectedRoute, AIChatbot
-│       │   ├── layout/     # Navbar, Footer, Sidebar, DashboardLayout
-│       │   └── ui/         # Reusable UI components
-│       ├── context/        # AuthContext
-│       ├── hooks/          # Custom hooks
 │       ├── pages/
-│       │   ├── public/     # Home, About, Academics, etc.
-│       │   ├── admin/      # Dashboard, Students, Notices...
-│       │   ├── teacher/    # Marks, Attendance
-│       │   ├── student/    # Results, Attendance
-│       │   └── parent/     # Dashboard
-│       ├── services/       # api.js, ai.js (Axios wrappers)
-│       └── styles/         # Global CSS (Tailwind)
-└── backend/           # Node + Express API
+│       │   ├── public/    # Home, About, Academics, etc.
+│       │   ├── admin/     # Dashboard, Students, Notices, Gallery, Admissions
+│       │   ├── teacher/   # Dashboard, Marks, Attendance
+│       │   ├── student/   # Dashboard, Results, Attendance
+│       │   └── parent/    # Dashboard
+│       ├── components/    # Navbar, Footer, Sidebar, AIChatbot, etc.
+│       ├── context/       # AuthContext (JWT login/logout)
+│       └── services/      # api.js, ai.js
+└── backend/               # Node + Express API
     └── src/
-        ├── config/         # db.js, schema.sql
-        ├── middleware/     # auth.js (JWT protect/authorize)
-        ├── routes/         # auth, ai, admissions, notices, gallery
-        ├── controllers/    # (Phase 2 — business logic separation)
-        └── services/       # (Phase 2 — AI, email services)
+        ├── config/        # db.js (MySQL), schema.sql
+        ├── middleware/    # auth.js (JWT)
+        └── routes/        # auth, ai, students, marks, attendance,
+                           # admissions, notices, gallery, contact
 ```
 
 ---
 
-## Phases
+## School Info
 
-### Phase 1 — Ship & Deploy (Weeks 1–4) ✅
-- Full public website (all pages)
-- Admission inquiry form
-- AI FAQ Chatbot (Gemini)
-- Deployed on Vercel + Render + Neon
-
-### Phase 2 — Admin Panel (Weeks 5–8)
-- JWT Auth + Role-based login
-- Admin dashboard: manage students, notices, gallery
-- AI Notice Generator
-- Admission review workflow
-
-### Phase 3 — Portals + ML (Weeks 9–14)
-- Teacher portal: marks + attendance
-- Student portal: results + timetable
-- Parent portal: child tracking
-- Student Performance Prediction model (scikit-learn/TensorFlow)
-- Analytics dashboard (Recharts)
-
----
-
-## Setup
-
-### Frontend
-```bash
-cd frontend
-npm install
-cp .env.example .env   # fill in VITE_API_URL
-npm run dev
-```
-
-### Backend
-```bash
-cd backend
-npm install
-cp .env.example .env   # fill in DATABASE_URL, JWT_SECRET, GEMINI_API_KEY
-# Run schema.sql on your Neon DB
-npm run dev
-```
+| Field    | Value |
+|----------|-------|
+| Name     | Shree Mangal Chand Didwania Vidya Mandir |
+| Board    | CBSE |
+| Location | Khori Brahmanan, Raghunathgarh, Sikar, Rajasthan – 332001 |
+| Phone    | +91-9001995272 |
+| Email    | smdvidyamandir@gmail.com |
+| Classes  | I to XII (Science & Commerce in XI-XII) |
+| Est.     | 2009 |

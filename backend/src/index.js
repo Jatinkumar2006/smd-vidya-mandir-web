@@ -1,11 +1,16 @@
-import express   from 'express'
-import cors      from 'cors'
-import dotenv    from 'dotenv'
-import authRoutes      from './routes/auth.js'
-import aiRoutes        from './routes/ai.js'
-import admissionRoutes from './routes/admissions.js'
-import noticeRoutes    from './routes/notices.js'
-import galleryRoutes   from './routes/gallery.js'
+import express        from 'express'
+import cors           from 'cors'
+import dotenv         from 'dotenv'
+
+import authRoutes       from './routes/auth.js'
+import aiRoutes         from './routes/ai.js'
+import admissionRoutes  from './routes/admissions.js'
+import noticeRoutes     from './routes/notices.js'
+import galleryRoutes    from './routes/gallery.js'
+import studentRoutes    from './routes/students.js'
+import marksRoutes      from './routes/marks.js'
+import attendanceRoutes from './routes/attendance.js'
+import contactRoutes    from './routes/contact.js'
 
 dotenv.config()
 
@@ -16,12 +21,26 @@ app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173' }))
 app.use(express.json())
 app.use('/uploads', express.static('uploads'))
 
-app.get('/api/health', (_, res) => res.json({ status: 'ok', project: 'SMD Digital Campus' }))
+// Health check
+app.get('/api/health', (_, res) => res.json({
+  status: 'ok',
+  project: 'SMD Digital Campus',
+  db: 'MySQL',
+  ai: 'Groq (llama3-8b-8192)',
+}))
 
-app.use('/api/auth',       authRoutes)
-app.use('/api/ai',         aiRoutes)
-app.use('/api/admissions', admissionRoutes)
-app.use('/api/notices',    noticeRoutes)
-app.use('/api/gallery',    galleryRoutes)
+// Routes
+app.use('/api/auth',        authRoutes)
+app.use('/api/ai',          aiRoutes)
+app.use('/api/admissions',  admissionRoutes)
+app.use('/api/notices',     noticeRoutes)
+app.use('/api/gallery',     galleryRoutes)
+app.use('/api/students',    studentRoutes)
+app.use('/api/marks',       marksRoutes)
+app.use('/api/attendance',  attendanceRoutes)
+app.use('/api/contact',     contactRoutes)
 
-app.listen(PORT, () => console.log(`SMD Backend running on port ${PORT}`))
+// 404 handler
+app.use((req, res) => res.status(404).json({ message: 'Route not found' }))
+
+app.listen(PORT, () => console.log(`✅  SMD Backend running on port ${PORT}  |  DB: MySQL  |  AI: Groq`))
