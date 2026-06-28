@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom'
 import { Phone, Mail, MapPin, Youtube, Facebook } from 'lucide-react'
 
+/**
+ * Footer Component.
+ * Renders the bottom section of the public website containing contact info,
+ * quick links, and social media icons.
+ */
 export default function Footer() {
   return (
     <footer className="bg-smd-blue text-white">

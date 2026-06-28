@@ -1,10 +1,30 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Phone, Mail, MapPin, Clock, Youtube, Facebook } from 'lucide-react'
+import { motion } from 'framer-motion'
 import api from '@/services/api'
 import toast from 'react-hot-toast'
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] } }
+}
+
+/**
+ * Contact Page Component.
+ * Displays contact information, a Google Map embed, and a contact form.
+ */
 export default function Contact() {
+  // ── Form State ──
+  // Manages the state of the contact form inputs (name, email, phone, message).
   const [form, setForm]     = useState({ name: '', email: '', phone: '', subject: '', message: '' })
   const [loading, setLoading] = useState(false)
 
@@ -32,21 +52,21 @@ export default function Contact() {
       </Helmet>
 
       {/* Header */}
-      <div style={{ background: 'linear-gradient(110deg,#0a143c 0%,#1a3aad 100%)', padding: '100px 4rem 60px', marginTop: '70px' }}>
-        <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
-          <p style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '10px' }}>Get in Touch</p>
-          <h1 style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 900, color: '#fff', marginBottom: '16px' }}>Contact Us</h1>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '560px', lineHeight: 1.75 }}>
+      <div className="responsive-header" style={{ background: 'linear-gradient(110deg,#0a143c 0%,#1a3aad 100%)' }}>
+        <motion.div initial="hidden" animate="visible" variants={containerVariants} style={{ maxWidth: '1160px', margin: '0 auto' }}>
+          <motion.p variants={itemVariants} style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '10px' }}>Get in Touch</motion.p>
+          <motion.h1 variants={itemVariants} style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 900, color: '#fff', marginBottom: '16px' }}>Contact Us</motion.h1>
+          <motion.p variants={itemVariants} style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '560px', lineHeight: 1.75 }}>
             We'd love to hear from you. Reach out for admissions, general inquiries or to schedule a campus visit.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       </div>
 
-      <section style={{ padding: '80px 4rem' }}>
-        <div style={{ maxWidth: '1160px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: '48px' }}>
+      <section className="responsive-section">
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={containerVariants} className="responsive-contact-grid" style={{ maxWidth: '1160px', margin: '0 auto' }}>
 
           {/* Left — Contact Info */}
-          <div>
+          <motion.div variants={itemVariants}>
             <h2 style={{ fontFamily: "'Merriweather',serif", fontSize: '1.6rem', fontWeight: 700, color: '#0a143c', marginBottom: '28px' }}>School Information</h2>
 
             {[
@@ -88,15 +108,15 @@ export default function Contact() {
                 </a>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right — Inquiry Form */}
-          <div style={{ background: '#f7f9ff', borderRadius: '20px', padding: '40px', border: '1px solid #e5e7eb' }}>
+          <motion.div variants={itemVariants} style={{ background: '#f7f9ff', borderRadius: '20px', padding: '40px', border: '1px solid #e5e7eb' }}>
             <h2 style={{ fontFamily: "'Merriweather',serif", fontSize: '1.4rem', fontWeight: 700, color: '#0a143c', marginBottom: '6px' }}>Send us a Message</h2>
             <p style={{ color: '#6b7280', fontSize: '13.5px', marginBottom: '28px' }}>We typically respond within 24 hours on working days.</p>
 
             <form onSubmit={submit}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
                   <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#374151', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Your Name *</label>
                   <input name="name" value={form.name} onChange={handle} required placeholder="Ramesh Kumar"
@@ -153,12 +173,12 @@ export default function Contact() {
                 {loading ? 'Sending...' : 'Send Message →'}
               </button>
             </form>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* Map placeholder */}
-      <section style={{ padding: '0 4rem 80px' }}>
+      <section className="responsive-section-bottom">
         <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
           <div style={{ borderRadius: '18px', overflow: 'hidden', border: '1px solid #e5e7eb', height: '320px', background: '#f7f9ff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div style={{ textAlign: 'center' }}>

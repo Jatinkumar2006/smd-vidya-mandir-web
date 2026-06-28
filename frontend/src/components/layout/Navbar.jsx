@@ -14,11 +14,18 @@ const NAV_LINKS = [
   { to: '/contact',    label: 'Contact'    },
 ]
 
+/**
+ * Primary Navigation Bar Component.
+ * Handles desktop and mobile navigation, scroll-based transparency effects,
+ * and mobile menu toggling.
+ */
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
-  // Solid navbar on scroll
+  // ── Scroll Effect Logic ──
+  // Listens to window scroll events to toggle the 'scrolled' state.
+  // When scrolled > 60px, the navbar becomes a solid color instead of translucent.
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -27,6 +34,7 @@ export default function Navbar() {
 
   return (
     <nav
+      className="responsive-navbar"
       style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         height: '70px',
@@ -36,7 +44,6 @@ export default function Navbar() {
         boxShadow: scrolled ? '0 2px 20px rgba(0,0,0,0.3)' : 'none',
         transition: 'all 0.3s',
         display: 'flex', alignItems: 'center',
-        padding: '0 2.5rem',
       }}
     >
       {/* ── Brand (Logo + Name) ── */}

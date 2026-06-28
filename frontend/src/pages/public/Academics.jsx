@@ -1,6 +1,20 @@
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
+import { motion } from 'framer-motion'
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] } }
+}
 
 const CLASSES = [
   { range: 'Class I – V',   label: 'Primary',    desc: 'Strong foundation in languages, mathematics, EVS and arts with activity-based learning.' },
@@ -29,6 +43,12 @@ const HIGHLIGHTS = [
   { icon: '🧑‍🏫', title: 'Personal Attention',   desc: 'Small class sizes ensuring every student gets individual guidance.' },
 ]
 
+// ── Component ─────────────────────────────────────────────
+
+/**
+ * Academics Page Component.
+ * Outlines the curriculum structure, subjects offered, and pedagogical approach.
+ */
 export default function Academics() {
   return (
     <>
@@ -38,26 +58,26 @@ export default function Academics() {
       </Helmet>
 
       {/* Header */}
-      <div style={{ background: 'linear-gradient(110deg,#0a143c 0%,#1a3aad 100%)', padding: '100px 4rem 60px', marginTop: '70px' }}>
-        <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
-          <p style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '10px' }}>Education</p>
-          <h1 style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 900, color: '#fff', marginBottom: '16px' }}>Academics</h1>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '560px', lineHeight: 1.75 }}>
+      <div className="responsive-header" style={{ background: 'linear-gradient(110deg,#0a143c 0%,#1a3aad 100%)' }}>
+        <motion.div initial="hidden" animate="visible" variants={containerVariants} style={{ maxWidth: '1160px', margin: '0 auto' }}>
+          <motion.p variants={itemVariants} style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '10px' }}>Education</motion.p>
+          <motion.h1 variants={itemVariants} style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 900, color: '#fff', marginBottom: '16px' }}>Academics</motion.h1>
+          <motion.p variants={itemVariants} style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '560px', lineHeight: 1.75 }}>
             CBSE-affiliated curriculum from Class I to XII, built to inspire curiosity and academic excellence.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       </div>
 
-      {/* Classes */}
-      <section style={{ padding: '80px 4rem' }}>
-        <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
+      {/* Curriculum Levels */}
+      <section className="responsive-section">
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={containerVariants} style={{ maxWidth: '1160px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-            <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#f59e0b', marginBottom: '10px' }}>Structure</p>
-            <h2 style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(1.7rem,2.8vw,2.2rem)', fontWeight: 700, color: '#0a143c' }}>Classes Offered</h2>
+            <motion.p variants={itemVariants} style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#f59e0b', marginBottom: '10px' }}>Structure</motion.p>
+            <motion.h2 variants={itemVariants} style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(1.7rem,2.8vw,2.2rem)', fontWeight: 700, color: '#0a143c' }}>Classes Offered</motion.h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '20px' }}>
+          <div className="responsive-grid-4">
             {CLASSES.map(({ range, label, desc }, i) => (
-              <div key={range} style={{ borderRadius: '16px', overflow: 'hidden', border: '1px solid #e5e7eb', transition: 'all 0.25s' }}
+              <motion.div variants={itemVariants} key={range} style={{ borderRadius: '16px', overflow: 'hidden', border: '1px solid #e5e7eb', transition: 'all 0.25s' }}
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 12px 40px rgba(10,20,60,0.1)' }}
                 onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none' }}
               >
@@ -68,20 +88,20 @@ export default function Academics() {
                 <div style={{ padding: '20px 22px', background: '#fff' }}>
                   <p style={{ fontSize: '13.5px', color: '#6b7280', lineHeight: 1.7 }}>{desc}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Subjects */}
-      <section style={{ padding: '80px 4rem', background: '#f7f9ff' }}>
+      <section className="responsive-section" style={{ background: '#f7f9ff' }}>
         <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '48px' }}>
             <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#f59e0b', marginBottom: '10px' }}>Curriculum</p>
             <h2 style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(1.7rem,2.8vw,2.2rem)', fontWeight: 700, color: '#0a143c' }}>Subjects We Teach</h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '14px' }}>
+          <div className="responsive-grid-4" style={{ gap: '14px' }}>
             {SUBJECTS.map(({ name, icon }) => (
               <div key={name} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '12px', padding: '18px 20px', display: 'flex', alignItems: 'center', gap: '14px', transition: 'all 0.2s' }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = '#f59e0b'; e.currentTarget.style.background = '#fff8ed' }}
@@ -96,15 +116,15 @@ export default function Academics() {
       </section>
 
       {/* Academic Highlights */}
-      <section style={{ padding: '80px 4rem' }}>
-        <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
+      <section className="responsive-section">
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={containerVariants} style={{ maxWidth: '1160px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-            <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#f59e0b', marginBottom: '10px' }}>At SMD School</p>
-            <h2 style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(1.7rem,2.8vw,2.2rem)', fontWeight: 700, color: '#0a143c' }}>Academic Highlights</h2>
+            <motion.p variants={itemVariants} style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#f59e0b', marginBottom: '10px' }}>At SMD School</motion.p>
+            <motion.h2 variants={itemVariants} style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(1.7rem,2.8vw,2.2rem)', fontWeight: 700, color: '#0a143c' }}>Academic Highlights</motion.h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '20px' }}>
+          <div className="responsive-grid-3">
             {HIGHLIGHTS.map(({ icon, title, desc }) => (
-              <div key={title} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '16px', padding: '28px 24px', display: 'flex', gap: '16px', alignItems: 'flex-start', transition: 'all 0.25s' }}
+              <motion.div variants={itemVariants} key={title} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '16px', padding: '28px 24px', display: 'flex', gap: '16px', alignItems: 'flex-start', transition: 'all 0.25s' }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = '#c7d9ff'; e.currentTarget.style.boxShadow = '0 8px 32px rgba(10,20,60,0.08)' }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = '#e5e7eb'; e.currentTarget.style.boxShadow = 'none' }}
               >
@@ -113,10 +133,10 @@ export default function Academics() {
                   <h3 style={{ fontWeight: 700, fontSize: '15px', color: '#0a143c', marginBottom: '6px' }}>{title}</h3>
                   <p style={{ fontSize: '13.5px', color: '#6b7280', lineHeight: 1.65 }}>{desc}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* CTA */}

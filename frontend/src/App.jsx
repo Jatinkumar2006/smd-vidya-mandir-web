@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { AuthProvider } from '@/context/AuthContext'
 import ProtectedRoute from '@/components/common/ProtectedRoute'
+import ScrollToTop from '@/components/common/ScrollToTop'
 
 // Public Pages
 import Home from '@/pages/public/Home'
@@ -40,9 +41,15 @@ import ParentDashboard from '@/pages/parent/Dashboard'
 import PublicLayout from '@/components/layout/PublicLayout'
 import DashboardLayout from '@/components/layout/DashboardLayout'
 
+/**
+ * Main Application Component.
+ * Sets up the React Router structure, wraps the app in the AuthProvider,
+ * and defines all public, protected, and role-based routes.
+ */
 export default function App() {
   return (
     <AuthProvider>
+      <ScrollToTop />
       <Routes>
         {/* ── Public Routes ── */}
         <Route element={<PublicLayout />}>

@@ -1,6 +1,20 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { X, ZoomIn } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.05 }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, scale: 0.95, y: 20 },
+  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } }
+}
 
 const CATEGORIES = ['All', 'Events', 'Sports', 'Cultural', 'Campus']
 
@@ -16,9 +30,23 @@ const GALLERY_ITEMS = [
   { id: 9,  category: 'Events',   title: 'Prize Distribution',       src: '/gallery/prize-distribution.png', desc: 'Recognizing academic excellence and extra-curricular achievements.' },
 ]
 
+// ── Component ─────────────────────────────────────────────
+
+/**
+ * Gallery Page Component.
+ * Displays a photo gallery with category filtering.
+ * Features an interactive lightbox for viewing images in full screen
+ * and utilizes framer-motion for smooth transition animations when filtering.
+ */
 export default function Gallery() {
+  // ── State Management ──
+  // selectedCategory tracks the currently active filter category (e.g. 'All', 'Events')
   const [active, setActive]     = useState('All')
+  
+  // lightbox tracks the currently selected image object to display in full screen, null if closed
   const [lightbox, setLightbox] = useState(null)
+  
+  // hoveredId tracks which image ID is currently being hovered to apply zoom/overlay effects
   const [hoveredId, setHoveredId] = useState(null)
 
   const filtered = active === 'All' ? GALLERY_ITEMS : GALLERY_ITEMS.filter(i => i.category === active)
@@ -31,18 +59,18 @@ export default function Gallery() {
       </Helmet>
 
       {/* Header */}
-      <div style={{ background: 'linear-gradient(110deg,#0a143c 0%,#1a3aad 100%)', padding: '100px 4rem 60px', marginTop: '70px' }}>
-        <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
-          <p style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '10px' }}>Memories</p>
-          <h1 style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 900, color: '#fff', marginBottom: '16px' }}>Photo Gallery</h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '16px', maxWidth: '560px', lineHeight: 1.75 }}>
+      <div className="responsive-header" style={{ background: 'linear-gradient(110deg,#0a143c 0%,#1a3aad 100%)' }}>
+        <motion.div initial="hidden" animate="visible" variants={containerVariants} style={{ maxWidth: '1160px', margin: '0 auto' }}>
+          <motion.p variants={itemVariants} style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '10px' }}>Memories</motion.p>
+          <motion.h1 variants={itemVariants} style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 900, color: '#fff', marginBottom: '16px' }}>Photo Gallery</motion.h1>
+          <motion.p variants={itemVariants} style={{ color: 'rgba(255,255,255,0.75)', fontSize: '16px', maxWidth: '560px', lineHeight: 1.75 }}>
             Glimpses of life at SMD School — events, sports, cultural programs and everyday campus moments.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       </div>
 
-      {/* Filter Tabs */}
-      <section style={{ padding: '40px 4rem 0', background: '#f7f9ff' }}>
+      {/* Filters */}
+      <section className="responsive-section-top" style={{ background: '#f7f9ff' }}>
         <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
             {CATEGORIES.map(cat => (
@@ -64,21 +92,28 @@ export default function Gallery() {
         </div>
       </section>
 
-      {/* Gallery Grid */}
-      <section style={{ padding: '32px 4rem 80px', background: '#f7f9ff' }}>
+      {/* Grid */}
+      <section className="responsive-section-bottom" style={{ background: '#f7f9ff' }}>
         <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '16px',
-          }}>
-            {filtered.map((item, index) => (
-              <div
-                key={item.id}
-                onClick={() => setLightbox(item)}
-                onMouseEnter={() => setHoveredId(item.id)}
-                onMouseLeave={() => setHoveredId(null)}
-                style={{
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+            className="responsive-grid-3"
+          >
+            <AnimatePresence>
+              {filtered.map((item, index) => (
+                <motion.div
+                  layout
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.4 }}
+                  key={item.id}
+                  onClick={() => setLightbox(item)}
+                  onMouseEnter={() => setHoveredId(item.id)}
+                  onMouseLeave={() => setHoveredId(null)}
+                  style={{
                   borderRadius: '16px',
                   overflow: 'hidden',
                   cursor: 'pointer',
@@ -124,9 +159,10 @@ export default function Gallery() {
                     )}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+            </AnimatePresence>
+          </motion.div>
 
           {filtered.length === 0 && (
             <div style={{ textAlign: 'center', padding: '60px', color: '#9ca3af' }}>

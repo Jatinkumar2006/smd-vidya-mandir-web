@@ -1,8 +1,22 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { ArrowRight, CheckCircle } from 'lucide-react'
+import { motion } from 'framer-motion'
 import api from '@/services/api'
 import toast from 'react-hot-toast'
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] } }
+}
 
 const STEPS = [
   { n: '01', title: 'Fill Online Form',    desc: 'Complete the admission inquiry form below with student and parent details.' },
@@ -20,7 +34,16 @@ const DOCS = [
   'Caste certificate (if applicable)',
 ]
 
+// ── Component ─────────────────────────────────────────────
+
+/**
+ * Admissions Page Component.
+ * Handles the display of admission requirements, steps, and the online application form.
+ * Contains state management for form inputs and submission handling.
+ */
 export default function Admissions() {
+  // ── Form State Management ──
+  // Stores all user inputs for the admission application form.
   const [form, setForm] = useState({
     student_name: '', dob: '', gender: '', class_applying: '',
     parent_name: '', relation: 'Father', phone: '', email: '', address: '',
@@ -55,44 +78,44 @@ export default function Admissions() {
       </Helmet>
 
       {/* Header */}
-      <div style={{ background: 'linear-gradient(110deg,#0a143c 0%,#1a3aad 100%)', padding: '100px 4rem 60px', marginTop: '70px' }}>
-        <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
-          <p style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '10px' }}>2025–26</p>
-          <h1 style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 900, color: '#fff', marginBottom: '16px' }}>Admissions Open</h1>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '560px', lineHeight: 1.75 }}>
+      <div className="responsive-header" style={{ background: 'linear-gradient(110deg,#0a143c 0%,#1a3aad 100%)' }}>
+        <motion.div initial="hidden" animate="visible" variants={containerVariants} style={{ maxWidth: '1160px', margin: '0 auto' }}>
+          <motion.p variants={itemVariants} style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '10px' }}>2025–26</motion.p>
+          <motion.h1 variants={itemVariants} style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 900, color: '#fff', marginBottom: '16px' }}>Admissions Open</motion.h1>
+          <motion.p variants={itemVariants} style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '560px', lineHeight: 1.75 }}>
             Apply online for Classes I – XII. Seats are limited — secure your child's admission today.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       </div>
 
       {/* Process Steps */}
-      <section style={{ padding: '80px 4rem', background: '#f7f9ff' }}>
-        <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
+      <section className="responsive-section" style={{ background: '#f7f9ff' }}>
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={containerVariants} style={{ maxWidth: '1160px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-            <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#f59e0b', marginBottom: '10px' }}>How It Works</p>
-            <h2 style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(1.7rem,2.8vw,2.2rem)', fontWeight: 700, color: '#0a143c' }}>Admission Process</h2>
+            <motion.p variants={itemVariants} style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#f59e0b', marginBottom: '10px' }}>How It Works</motion.p>
+            <motion.h2 variants={itemVariants} style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(1.7rem,2.8vw,2.2rem)', fontWeight: 700, color: '#0a143c' }}>Admission Process</motion.h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '20px' }}>
+          <div className="responsive-grid-4">
             {STEPS.map(({ n, title, desc }) => (
-              <div key={n} style={{ position: 'relative' }}>
+              <motion.div variants={itemVariants} key={n} style={{ position: 'relative' }}>
                 <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '16px', padding: '28px 22px', height: '100%' }}>
                   <div style={{ fontSize: '28px', fontWeight: 800, color: '#e5e7eb', marginBottom: '12px', fontFamily: 'monospace' }}>{n}</div>
                   <h3 style={{ fontWeight: 700, fontSize: '15px', color: '#0a143c', marginBottom: '8px' }}>{title}</h3>
                   <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: 1.65 }}>{desc}</p>
                 </div>
                 <div style={{ position: 'absolute', top: '-1px', left: '-1px', width: '4px', height: '60%', background: '#f59e0b', borderRadius: '4px 0 0 4px' }} />
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Form + Docs */}
-      <section style={{ padding: '80px 4rem' }}>
-        <div style={{ maxWidth: '1160px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 340px', gap: '40px', alignItems: 'flex-start' }}>
+      <section className="responsive-section">
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={containerVariants} className="responsive-admission-grid" style={{ maxWidth: '1160px', margin: '0 auto' }}>
 
           {/* Form */}
-          <div>
+          <motion.div variants={itemVariants}>
             <h2 style={{ fontFamily: "'Merriweather',serif", fontSize: '1.6rem', fontWeight: 700, color: '#0a143c', marginBottom: '6px' }}>Online Admission Form</h2>
             <p style={{ color: '#6b7280', fontSize: '13.5px', marginBottom: '32px' }}>Fill in the details below. Fields marked * are required.</p>
 
@@ -114,7 +137,7 @@ export default function Admissions() {
                 {/* Student Details */}
                 <div style={{ marginBottom: '28px' }}>
                   <h3 style={{ fontSize: '13px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#f59e0b', marginBottom: '16px', paddingBottom: '8px', borderBottom: '1px solid #e5e7eb' }}>Student Details</h3>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
                       <label style={labelStyle}>Student Name *</label>
                       <input name="student_name" value={form.student_name} onChange={handle} required placeholder="Full name" style={inputStyle} onFocus={e => e.target.style.borderColor='#0a143c'} onBlur={e => e.target.style.borderColor='#e5e7eb'} />
@@ -124,7 +147,7 @@ export default function Admissions() {
                       <input name="dob" value={form.dob} onChange={handle} required type="date" style={inputStyle} onFocus={e => e.target.style.borderColor='#0a143c'} onBlur={e => e.target.style.borderColor='#e5e7eb'} />
                     </div>
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label style={labelStyle}>Gender *</label>
                       <select name="gender" value={form.gender} onChange={handle} required style={inputStyle} onFocus={e => e.target.style.borderColor='#0a143c'} onBlur={e => e.target.style.borderColor='#e5e7eb'}>
@@ -145,7 +168,7 @@ export default function Admissions() {
                 {/* Parent Details */}
                 <div style={{ marginBottom: '28px' }}>
                   <h3 style={{ fontSize: '13px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#f59e0b', marginBottom: '16px', paddingBottom: '8px', borderBottom: '1px solid #e5e7eb' }}>Parent / Guardian Details</h3>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
                       <label style={labelStyle}>Parent Name *</label>
                       <input name="parent_name" value={form.parent_name} onChange={handle} required placeholder="Full name" style={inputStyle} onFocus={e => e.target.style.borderColor='#0a143c'} onBlur={e => e.target.style.borderColor='#e5e7eb'} />
@@ -157,7 +180,7 @@ export default function Admissions() {
                       </select>
                     </div>
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
                       <label style={labelStyle}>Phone Number *</label>
                       <input name="phone" value={form.phone} onChange={handle} required placeholder="+91 9876543210" type="tel" style={inputStyle} onFocus={e => e.target.style.borderColor='#0a143c'} onBlur={e => e.target.style.borderColor='#e5e7eb'} />
@@ -178,10 +201,10 @@ export default function Admissions() {
                 </button>
               </form>
             )}
-          </div>
+          </motion.div>
 
           {/* Sidebar — Documents */}
-          <div style={{ position: 'sticky', top: '90px' }}>
+          <motion.div variants={itemVariants} style={{ position: 'sticky', top: '90px' }}>
             <div style={{ background: '#0a143c', borderRadius: '18px', padding: '28px', marginBottom: '20px' }}>
               <h3 style={{ color: '#f59e0b', fontWeight: 700, fontSize: '15px', marginBottom: '16px' }}>📋 Documents Required</h3>
               {DOCS.map((doc, i) => (
@@ -199,8 +222,8 @@ export default function Admissions() {
                 +91-9001995272
               </a>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
     </>
   )

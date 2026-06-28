@@ -2,17 +2,20 @@ import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { Phone, ArrowRight, BookOpen, Monitor, Trophy, Zap } from 'lucide-react'
+import { motion } from 'framer-motion'
+import CountUp from 'react-countup'
 
 import buildingImg from '@/assets/images/building.jpg'
 import logoImg     from '@/assets/images/logo.png'
+import VanillaTilt from 'vanilla-tilt'
 
 // ── Data ─────────────────────────────────────────────────
 
 const STATS = [
-  { value: '500+',    label: 'Students'        },
-  { value: '15+',     label: 'Years of Trust'  },
-  { value: '30+',     label: 'Expert Teachers' },
-  { value: 'I – XII', label: 'All Classes'     },
+  { end: 500, suffix: '+', label: 'Students'        },
+  { end: 15,  suffix: '+', label: 'Years of Trust'  },
+  { end: 30,  suffix: '+', label: 'Expert Teachers' },
+  { value: 'I – XII',      label: 'All Classes'     },
 ]
 
 const FEATURES = [
@@ -54,12 +57,58 @@ const QUICK_LINKS = [
   { emoji: '📊', label: 'Mandatory Disclosure', to: '/mpd'        },
 ]
 
+// ── Animation Variants ────────────────────────────────────
+
+const heroContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.25, delayChildren: 0.15 }
+  }
+}
+
+const heroItemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.90, ease: [0.25, 0.1, 0.25, 1] } }
+}
+
 // ── Component ─────────────────────────────────────────────
 
+/**
+ * Home Page Component.
+ * Acts as the landing page for the public website.
+ * Features a parallax hero section, a dynamic stats counter,
+ * and animated feature cards using framer-motion.
+ */
 export default function Home() {
   const heroBgRef = useRef(null)
 
-  // Parallax on scroll
+  useEffect(() => {
+    // 1. Tilt on Hero Background removed as requested
+
+    // 2. Tilt on Feature Cards
+    const featureCards = document.querySelectorAll('.feature-card');
+    if (featureCards.length > 0) {
+      VanillaTilt.init(featureCards, {
+        max: 25,
+        speed: 400,
+        glare: true,
+        "max-glare": 0.4,
+        scale: 1.05,
+      });
+    }
+
+    // Cleanup tilt instances on unmount
+    return () => {
+      featureCards.forEach(card => {
+        if (card.vanillaTilt) card.vanillaTilt.destroy();
+      });
+    };
+  }, []);
+
+  // ── Parallax Scroll Effect ──
+  // Translates the hero background image slightly downwards as the user scrolls down,
+  // creating a sense of depth and a 3D parallax effect.
   useEffect(() => {
     const handleScroll = () => {
       if (heroBgRef.current) {
@@ -72,6 +121,18 @@ export default function Home() {
 
   return (
     <>
+      <style>
+        {`
+          @keyframes goldPulse {
+            0% { text-shadow: 0 0 5px rgba(245,158,11,0.2); }
+            50% { text-shadow: 0 0 15px rgba(245,158,11,0.8), 0 0 25px rgba(245,158,11,0.4); }
+            100% { text-shadow: 0 0 5px rgba(245,158,11,0.2); }
+          }
+          .glowing-number {
+            animation: goldPulse 2.5s infinite ease-in-out;
+          }
+        `}
+      </style>
       <Helmet>
         <title>SMD Digital Campus – Best CBSE School in Sikar, Rajasthan</title>
         <meta
@@ -87,28 +148,31 @@ export default function Home() {
         {/* Parallax background */}
         <div
           ref={heroBgRef}
+          className="absolute inset-0 bg-cover bg-[80%_center] md:bg-[center_25%]"
           style={{
-            position: 'absolute', inset: 0,
             backgroundImage: `url(${buildingImg})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center 25%',
             willChange: 'transform',
           }}
         />
 
-        {/* Gradient overlay — matches HTML exactly */}
+        {/* Gradient overlay */}
         <div
+          className="absolute inset-0 pointer-events-none"
           style={{
-            position: 'absolute', inset: 0,
             background: 'linear-gradient(110deg, rgba(5,10,40,0.90) 0%, rgba(5,10,40,0.75) 45%, rgba(5,10,40,0.35) 100%)',
           }}
         />
 
         {/* Hero content */}
-        <div style={{ position: 'relative', zIndex: 2, padding: '0 4rem', maxWidth: '700px' }}>
+        <motion.div 
+          variants={heroContainerVariants}
+          initial="hidden"
+          animate="visible"
+          className="relative z-10 px-4 md:px-16 max-w-[700px]"
+        >
 
           {/* Badge */}
-          <div style={{
+          <motion.div variants={heroItemVariants} style={{
             display: 'inline-flex', alignItems: 'center', gap: '8px',
             border: '1px solid rgba(245,158,11,0.5)', background: 'rgba(245,158,11,0.12)',
             color: '#fcd34d', fontSize: '11.5px', fontWeight: 600,
@@ -117,38 +181,27 @@ export default function Home() {
           }}>
             <span style={{ width: '6px', height: '6px', background: '#f59e0b', borderRadius: '50%', display: 'inline-block', flexShrink: 0 }} />
             CBSE Affiliated · Est. 2009 · Sikar
-          </div>
+          </motion.div>
 
           {/* Title */}
-          <h1 style={{
-            fontFamily: "'Merriweather', serif",
-            fontSize: 'clamp(2.1rem, 3.8vw, 3.4rem)',
-            fontWeight: 900, color: '#fff', lineHeight: 1.18, marginBottom: '10px',
-          }}>
+          <motion.h1 variants={heroItemVariants} className="font-serif text-3xl md:text-5xl lg:text-[3.4rem] font-black text-white leading-[1.18] mb-3">
             Shree Mangal Chand
-            <span style={{ color: '#f59e0b', display: 'block' }}>Didwania Vidya Mandir</span>
-          </h1>
+            <span className="text-amber-500 block">Didwania Vidya Mandir</span>
+          </motion.h1>
 
           {/* Motto */}
-          <p style={{
-            fontFamily: "'Merriweather', serif",
-            fontSize: '13.5px', fontStyle: 'italic',
-            color: 'rgba(245,158,11,0.85)', marginBottom: '18px', letterSpacing: '0.03em',
-          }}>
+          <motion.p variants={heroItemVariants} className="font-serif text-xs md:text-[13.5px] italic text-amber-500/85 mb-4 md:mb-5 tracking-[0.03em]">
             "तमसो मा ज्योतिर्गमय" — Lead us from darkness to light
-          </p>
+          </motion.p>
 
           {/* Subtitle */}
-          <p style={{
-            fontSize: '15.5px', color: 'rgba(255,255,255,0.72)',
-            lineHeight: 1.75, maxWidth: '500px', marginBottom: '36px',
-          }}>
+          <motion.p variants={heroItemVariants} className="text-sm md:text-[15.5px] text-white/75 leading-relaxed max-w-[500px] mb-6 md:mb-9">
             Nurturing young minds through quality CBSE education, modern infrastructure,
             and values-based learning at Raghunathgarh, Sikar, Rajasthan.
-          </p>
+          </motion.p>
 
           {/* Buttons */}
-          <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+          <motion.div variants={heroItemVariants} className="flex gap-3 md:gap-4 flex-wrap">
             <Link to="/admissions" style={{
               background: '#f59e0b', color: '#0a143c', fontWeight: 700,
               fontSize: '14px', padding: '13px 28px', borderRadius: '10px',
@@ -171,34 +224,35 @@ export default function Home() {
             >
               <Phone size={16} /> Call Us
             </a>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        {/* ── STATS BAR — fully solid gold, no backdrop-filter ── */}
+        {/* ── STATS BAR ── */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 3,
           display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
         }}>
-          {STATS.map(({ value, label }, i) => (
+          {STATS.map(({ value, end, suffix, label }, i) => (
             <div
               key={label}
+              className="p-2 md:p-5 text-center border-t border-white/10"
               style={{
-                padding: '18px 24px', textAlign: 'center',
-                background: '#f59e0b',   /* ← solid gold, no opacity, no backdrop-filter */
-                borderRight: i < STATS.length - 1 ? '1px solid rgba(255,255,255,0.25)' : 'none',
+                background: 'rgba(10,20,60,0.95)',
+                backdropFilter: 'blur(10px)',
+                borderRight: i < STATS.length - 1 ? '1px solid rgba(255,255,255,0.1)' : 'none',
                 transition: 'background 0.2s',
               }}
-              onMouseEnter={e => e.currentTarget.style.background = '#fbbf24'}
-              onMouseLeave={e => e.currentTarget.style.background = '#f59e0b'}
+              onMouseEnter={e => e.currentTarget.style.background = 'rgba(20,35,90,0.95)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'rgba(10,20,60,0.95)'}
             >
-              <div style={{ fontSize: '26px', fontWeight: 800, color: '#0a143c', lineHeight: 1 }}>
-                {value}
+              <div className="glowing-number text-lg md:text-[26px] font-extrabold text-amber-500 leading-none">
+                {end ? (
+                  <CountUp end={end} suffix={suffix} enableScrollSpy scrollSpyOnce duration={4.5} scrollSpyDelay={500} />
+                ) : (
+                  value
+                )}
               </div>
-              <div style={{
-                fontSize: '11px', fontWeight: 600,
-                color: 'rgba(10,20,60,0.65)', marginTop: '3px',
-                textTransform: 'uppercase', letterSpacing: '0.05em',
-              }}>
+              <div className="text-[9px] md:text-[11px] font-semibold text-white/65 mt-1 md:mt-2 uppercase tracking-[0.05em]">
                 {label}
               </div>
             </div>
@@ -207,8 +261,8 @@ export default function Home() {
       </section>
 
       {/* ── ABOUT ────────────────────────────────────────── */}
-      <section style={{ padding: '80px 4rem' }}>
-        <div style={{ maxWidth: '1160px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'center' }}>
+      <section className="responsive-section">
+        <div className="responsive-grid-2" style={{ maxWidth: '1160px', margin: '0 auto', alignItems: 'center' }}>
 
           {/* Image */}
           <div style={{ position: 'relative' }}>
@@ -231,70 +285,84 @@ export default function Home() {
           </div>
 
           {/* Text */}
-          <div>
-            <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#f59e0b', marginBottom: '10px' }}>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={heroContainerVariants}
+          >
+            <motion.p variants={heroItemVariants} style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#f59e0b', marginBottom: '10px' }}>
               About Our School
-            </p>
-            <h2 style={{ fontFamily: "'Merriweather', serif", fontSize: 'clamp(1.7rem,2.8vw,2.3rem)', fontWeight: 700, color: '#0a143c', lineHeight: 1.3, marginBottom: '20px' }}>
+            </motion.p>
+            <motion.h2 variants={heroItemVariants} style={{ fontFamily: "'Merriweather', serif", fontSize: 'clamp(1.7rem,2.8vw,2.3rem)', fontWeight: 700, color: '#0a143c', lineHeight: 1.3, marginBottom: '20px' }}>
               A Place Where Knowledge Meets Character
-            </h2>
-            <p style={{ color: '#4b5563', lineHeight: 1.82, marginBottom: '14px', fontSize: '15px' }}>
+            </motion.h2>
+            <motion.p variants={heroItemVariants} style={{ color: '#4b5563', lineHeight: 1.82, marginBottom: '14px', fontSize: '15px' }}>
               Shree Mangal Chand Didwania Vidya Mandir has been a cornerstone of quality
               education in Raghunathgarh, Sikar since 2009. Our CBSE-affiliated curriculum
               blends academic rigour with holistic development.
-            </p>
-            <p style={{ color: '#4b5563', lineHeight: 1.82, marginBottom: '20px', fontSize: '15px' }}>
+            </motion.p>
+            <motion.p variants={heroItemVariants} style={{ color: '#4b5563', lineHeight: 1.82, marginBottom: '20px', fontSize: '15px' }}>
               We believe every child carries a unique spark. Our experienced faculty,
               digital learning tools, and nurturing environment help students discover
               and develop their full potential.
-            </p>
+            </motion.p>
             {/* Motto box */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '15px 18px', background: '#fff8ed', borderLeft: '4px solid #f59e0b', borderRadius: '0 10px 10px 0', margin: '22px 0' }}>
+            <motion.div variants={heroItemVariants} style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '15px 18px', background: '#fff8ed', borderLeft: '4px solid #f59e0b', borderRadius: '0 10px 10px 0', margin: '22px 0' }}>
               <span style={{ fontSize: '22px', flexShrink: 0 }}>🪔</span>
               <span style={{ fontFamily: "'Merriweather', serif", fontSize: '14.5px', fontStyle: 'italic', color: '#0a143c', fontWeight: 700 }}>
                 "तमसो मा ज्योतिर्गमय" — Lead us from darkness to light
               </span>
-            </div>
-            <Link to="/about" style={{
-              display: 'inline-flex', alignItems: 'center', gap: '8px',
-              background: '#f59e0b', color: '#0a143c', fontWeight: 700,
-              fontSize: '14px', padding: '13px 28px', borderRadius: '10px',
-              textDecoration: 'none', transition: 'all 0.2s',
-              boxShadow: '0 4px 20px rgba(245,158,11,0.35)',
-            }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#fbbf24'; e.currentTarget.style.transform = 'translateY(-2px)' }}
-              onMouseLeave={e => { e.currentTarget.style.background = '#f59e0b'; e.currentTarget.style.transform = 'translateY(0)' }}
-            >
-              Learn More About Us <ArrowRight size={17} />
-            </Link>
-          </div>
+            </motion.div>
+            <motion.div variants={heroItemVariants}>
+              <Link to="/about" style={{
+                display: 'inline-flex', alignItems: 'center', gap: '8px',
+                background: '#f59e0b', color: '#0a143c', fontWeight: 700,
+                fontSize: '14px', padding: '13px 28px', borderRadius: '10px',
+                textDecoration: 'none', transition: 'all 0.2s',
+                boxShadow: '0 4px 20px rgba(245,158,11,0.35)',
+              }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#fbbf24'; e.currentTarget.style.transform = 'translateY(-2px)' }}
+                onMouseLeave={e => { e.currentTarget.style.background = '#f59e0b'; e.currentTarget.style.transform = 'translateY(0)' }}
+              >
+                Learn More About Us <ArrowRight size={17} />
+              </Link>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* ── FEATURES ─────────────────────────────────────── */}
-      <section style={{ padding: '80px 4rem', background: '#f7f9ff' }}>
+      <section className="responsive-section" style={{ background: '#f7f9ff' }}>
         <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
           {/* Header */}
-          <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-            <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#f59e0b', marginBottom: '10px' }}>
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={heroContainerVariants}
+            style={{ textAlign: 'center', marginBottom: '48px' }}
+          >
+            <motion.p variants={heroItemVariants} style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#f59e0b', marginBottom: '10px' }}>
               Why Choose SMD
-            </p>
-            <h2 style={{ fontFamily: "'Merriweather', serif", fontSize: 'clamp(1.7rem,2.8vw,2.3rem)', fontWeight: 700, color: '#0a143c', marginBottom: '14px' }}>
+            </motion.p>
+            <motion.h2 variants={heroItemVariants} style={{ fontFamily: "'Merriweather', serif", fontSize: 'clamp(1.7rem,2.8vw,2.3rem)', fontWeight: 700, color: '#0a143c', marginBottom: '14px' }}>
               Everything a Student Needs to Thrive
-            </h2>
-            <p style={{ color: '#6b7280', fontSize: '15.5px', lineHeight: 1.8, maxWidth: '560px', margin: '0 auto' }}>
+            </motion.h2>
+            <motion.p variants={heroItemVariants} style={{ color: '#6b7280', fontSize: '15.5px', lineHeight: 1.8, maxWidth: '560px', margin: '0 auto' }}>
               From digital learning tools to sports grounds — an environment where learning is joyful and growth is holistic.
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
           {/* Cards */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '20px' }}>
+          <div className="responsive-grid-4">
             {FEATURES.map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
-                style={{ background: '#fff', borderRadius: '16px', padding: '28px 22px', border: '1px solid #e5e7eb', textAlign: 'center', transition: 'all 0.25s', cursor: 'default' }}
-                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = '0 16px 48px rgba(10,20,60,0.10)'; e.currentTarget.style.borderColor = '#c7d9ff' }}
-                onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = '#e5e7eb' }}
+                className="feature-card"
+                style={{ background: '#fff', borderRadius: '16px', padding: '28px 22px', border: '1px solid #e5e7eb', textAlign: 'center', transition: 'box-shadow 0.25s, border-color 0.25s, transform 0.25s ease-out', cursor: 'pointer' }}
+                onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 20px 50px rgba(10,20,60,0.15)'; e.currentTarget.style.borderColor = '#c7d9ff'; e.currentTarget.style.transform = 'translateY(-6px)' }}
+                onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = '#e5e7eb'; e.currentTarget.style.transform = 'translateY(0)' }}
               >
                 <div style={{ width: '58px', height: '58px', borderRadius: '15px', background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
                   <Icon size={26} color="#1d4ed8" />
@@ -308,19 +376,25 @@ export default function Home() {
       </section>
 
       {/* ── NOTICES + QUICK LINKS ────────────────────────── */}
-      <section style={{ padding: '80px 4rem' }}>
+      <section className="responsive-section">
         <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
           {/* Header */}
-          <div style={{ textAlign: 'center', marginBottom: '44px' }}>
-            <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#f59e0b', marginBottom: '10px' }}>
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={heroContainerVariants}
+            style={{ textAlign: 'center', marginBottom: '44px' }}
+          >
+            <motion.p variants={heroItemVariants} style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#f59e0b', marginBottom: '10px' }}>
               Latest Updates
-            </p>
-            <h2 style={{ fontFamily: "'Merriweather', serif", fontSize: 'clamp(1.7rem,2.8vw,2.3rem)', fontWeight: 700, color: '#0a143c' }}>
+            </motion.p>
+            <motion.h2 variants={heroItemVariants} style={{ fontFamily: "'Merriweather', serif", fontSize: 'clamp(1.7rem,2.8vw,2.3rem)', fontWeight: 700, color: '#0a143c' }}>
               Notices & Announcements
-            </h2>
-          </div>
+            </motion.h2>
+          </motion.div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: '28px' }}>
+          <div className="responsive-grid-2" style={{ gap: '28px' }}>
             {/* Notices */}
             <div>
               {NOTICES.map(({ day, month, tag, title }) => (
@@ -369,7 +443,7 @@ export default function Home() {
       </section>
 
       {/* ── CTA BANNER ───────────────────────────────────── */}
-      <section style={{ background: 'linear-gradient(130deg, #0a143c 0%, #1a3aad 100%)', padding: '72px 4rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+      <section className="responsive-section" style={{ background: 'linear-gradient(130deg, #0a143c 0%, #1a3aad 100%)', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '-60%', right: '-5%', width: '520px', height: '520px', background: 'rgba(245,158,11,0.07)', borderRadius: '50%', pointerEvents: 'none' }} />
         <div style={{ position: 'relative', zIndex: 1, maxWidth: '640px', margin: '0 auto' }}>
           <h2 style={{ fontFamily: "'Merriweather', serif", fontSize: 'clamp(1.8rem,3vw,2.2rem)', color: '#fff', marginBottom: '14px', fontWeight: 700 }}>

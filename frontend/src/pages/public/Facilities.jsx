@@ -1,6 +1,20 @@
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
+import { motion } from 'framer-motion'
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] } }
+}
 
 const FACILITIES = [
   {
@@ -35,6 +49,12 @@ const FACILITIES = [
   },
 ]
 
+// ── Component ─────────────────────────────────────────────
+
+/**
+ * Facilities Page Component.
+ * Showcases the campus infrastructure, labs, and sports amenities.
+ */
 export default function Facilities() {
   return (
     <>
@@ -44,22 +64,22 @@ export default function Facilities() {
       </Helmet>
 
       {/* Header */}
-      <div style={{ background: 'linear-gradient(110deg,#0a143c 0%,#1a3aad 100%)', padding: '100px 4rem 60px', marginTop: '70px' }}>
-        <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
-          <p style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '10px' }}>Infrastructure</p>
-          <h1 style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 900, color: '#fff', marginBottom: '16px' }}>Our Facilities</h1>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '560px', lineHeight: 1.75 }}>
+      <div className="responsive-header" style={{ background: 'linear-gradient(110deg,#0a143c 0%,#1a3aad 100%)' }}>
+        <motion.div initial="hidden" animate="visible" variants={containerVariants} style={{ maxWidth: '1160px', margin: '0 auto' }}>
+          <motion.p variants={itemVariants} style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '10px' }}>Infrastructure</motion.p>
+          <motion.h1 variants={itemVariants} style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 900, color: '#fff', marginBottom: '16px' }}>Our Facilities</motion.h1>
+          <motion.p variants={itemVariants} style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '560px', lineHeight: 1.75 }}>
             Modern infrastructure designed to support academic, physical and personal growth of every student.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       </div>
 
-      {/* Facilities Grid */}
-      <section style={{ padding: '80px 4rem' }}>
-        <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '24px' }}>
+      {/* Main Facilities */}
+      <section className="responsive-section">
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={containerVariants} style={{ maxWidth: '1160px', margin: '0 auto' }}>
+          <div className="responsive-grid-3">
             {FACILITIES.map(({ icon, title, desc, tags }) => (
-              <div key={title} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '18px', overflow: 'hidden', transition: 'all 0.25s' }}
+              <motion.div variants={itemVariants} key={title} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '18px', overflow: 'hidden', transition: 'all 0.25s' }}
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 16px 48px rgba(10,20,60,0.1)'; e.currentTarget.style.borderColor = '#c7d9ff' }}
                 onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = '#e5e7eb' }}
               >
@@ -77,15 +97,15 @@ export default function Facilities() {
                     ))}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
-      {/* Stats Strip */}
-      <section style={{ background: '#0a143c', padding: '48px 4rem' }}>
-        <div style={{ maxWidth: '1160px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '20px', textAlign: 'center' }}>
+      {/* Quick Stats */}
+      <section style={{ background: '#0a143c', padding: '48px 0' }} className="px-4 md:px-16">
+        <div className="responsive-grid-4" style={{ maxWidth: '1160px', margin: '0 auto', textAlign: 'center' }}>
           {[
             { value: '500+', label: 'Students Enrolled' },
             { value: '6',    label: 'Major Facilities'  },
@@ -101,7 +121,7 @@ export default function Facilities() {
       </section>
 
       {/* CTA */}
-      <section style={{ padding: '72px 4rem', textAlign: 'center', background: '#f7f9ff' }}>
+      <section className="responsive-section" style={{ textAlign: 'center', background: '#f7f9ff' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto' }}>
           <h2 style={{ fontFamily: "'Merriweather',serif", fontSize: '2rem', color: '#0a143c', marginBottom: '14px', fontWeight: 700 }}>Visit Our Campus</h2>
           <p style={{ color: '#6b7280', fontSize: '16px', marginBottom: '32px' }}>Come see our facilities in person. We'd love to show you around.</p>
