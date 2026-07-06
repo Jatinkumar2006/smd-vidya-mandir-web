@@ -18,11 +18,14 @@ const Contact = lazy(() => import('@/pages/public/Contact'))
 const Admissions = lazy(() => import('@/pages/public/Admissions'))
 const MPD = lazy(() => import('@/pages/public/MPD'))
 const Careers = lazy(() => import('@/pages/public/Careers'))
+const Results = lazy(() => import('@/pages/public/Results'))
 const NotFound = lazy(() => import('@/pages/public/NotFound'))
 const Login = lazy(() => import('@/pages/public/Login'))
 
 const AdminDashboard = lazy(() => import('@/pages/admin/Dashboard'))
+const AdminTeachers = lazy(() => import('@/pages/admin/Teachers'))
 const AdminStudents = lazy(() => import('@/pages/admin/Students'))
+const AdminResults = lazy(() => import('@/pages/admin/Results'))
 const AdminGallery = lazy(() => import('@/pages/admin/Gallery'))
 const AdminNotices = lazy(() => import('@/pages/admin/Notices'))
 const AdminAdmissions = lazy(() => import('@/pages/admin/Admissions'))
@@ -60,6 +63,7 @@ export default function App() {
             <Route path="/contact"     element={<Contact />} />
             <Route path="/admissions"  element={<Admissions />} />
             <Route path="/careers"     element={<Careers />} />
+            <Route path="/results"     element={<Results />} />
             <Route path="/mpd"         element={<MPD />} />
             <Route path="/login"       element={<Login />} />
           </Route>
@@ -68,7 +72,9 @@ export default function App() {
           <Route element={<ProtectedRoute role="admin" />}>
             <Route element={<DashboardLayout role="admin" />}>
               <Route path="/admin"              element={<AdminDashboard />} />
+              <Route path="/admin/teachers"     element={<AdminTeachers />} />
               <Route path="/admin/students"     element={<AdminStudents />} />
+              <Route path="/admin/results"      element={<AdminResults />} />
               <Route path="/admin/gallery"      element={<AdminGallery />} />
               <Route path="/admin/notices"      element={<AdminNotices />} />
               <Route path="/admin/admissions"   element={<AdminAdmissions />} />

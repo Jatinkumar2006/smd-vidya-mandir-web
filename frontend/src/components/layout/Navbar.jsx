@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { to: '/academics',  label: 'Academics'  },
   { to: '/facilities', label: 'Facilities' },
   { to: '/gallery',    label: 'Gallery'    },
+  { to: '/results',    label: 'Results'    },
   { to: '/careers',    label: 'Careers'    },
   { to: '/mpd',        label: 'MPD'        },
   { to: '/contact',    label: 'Contact'    },

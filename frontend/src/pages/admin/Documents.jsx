@@ -11,6 +11,7 @@ export default function Documents() {
 
   // Form state
   const [showModal, setShowModal] = useState(false)
+  const [editingDoc, setEditingDoc] = useState(null)
   const [formData, setFormData] = useState({ title: '', doc_type: 'General Documents' })
   const [selectedFile, setSelectedFile] = useState(null)
 
@@ -29,25 +30,33 @@ export default function Documents() {
 
   const handleUpload = async (e) => {
     e.preventDefault()
-    if (!selectedFile) return toast.error('Please select an image file.')
+    if (!editingDoc && !selectedFile) return toast.error('Please select a file.')
 
     setIsUploading(true)
     const form = new FormData()
     form.append('title', formData.title)
     form.append('doc_type', formData.doc_type)
-    form.append('file', selectedFile)
+    if (selectedFile) form.append('file', selectedFile)
 
     try {
-      await api.post('/documents', form, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      })
-      toast.success('Document uploaded and analyzed successfully!')
+      if (editingDoc) {
+        await api.put(`/documents/${editingDoc.id}`, form, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        })
+        toast.success('Document updated successfully!')
+      } else {
+        await api.post('/documents', form, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        })
+        toast.success('Document uploaded and analyzed successfully!')
+      }
       setShowModal(false)
+      setEditingDoc(null)
       setFormData({ title: '', doc_type: 'General Documents' })
       setSelectedFile(null)
       fetchDocuments()
     } catch (err) {
-      toast.error(err.response?.data?.error || 'Failed to upload document')
+      toast.error(err.response?.data?.error || 'Failed to save document')
     } finally {
       setIsUploading(false)
     }
@@ -64,15 +73,27 @@ export default function Documents() {
     }
   }
 
+  const handleEdit = (doc) => {
+    setEditingDoc(doc)
+    setFormData({ title: doc.title, doc_type: doc.doc_type })
+    setSelectedFile(null)
+    setShowModal(true)
+  }
+
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">School Documents</h1>
-          <p className="text-sm text-slate-500 mt-1">Upload MPD files and Fee charts for the Chatbot</p>
+          <h1 className="text-2xl font-bold text-slate-800">MPD Documents</h1>
+          <p className="text-sm text-slate-500 mt-1">Manage Mandatory Public Disclosure files</p>
         </div>
         <button
-          onClick={() => setShowModal(true)}
+          onClick={() => {
+            setEditingDoc(null)
+            setFormData({ title: '', doc_type: 'General Documents' })
+            setSelectedFile(null)
+            setShowModal(true)
+          }}
           className="flex items-center gap-2 bg-smd-blue text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-blue-900 transition-colors"
         >
           <Plus size={18} /> Upload Document
@@ -119,7 +140,14 @@ export default function Documents() {
                       {doc.extracted_text && doc.extracted_text.length > 5 ? doc.extracted_text : <span className="text-red-400 italic">No text extracted</span>}
                     </div>
                   </td>
-                  <td className="py-4 px-6 text-right">
+                  <td className="py-4 px-6 text-right flex items-center justify-end gap-1">
+                    <button
+                      onClick={() => handleEdit(doc)}
+                      className="p-2 text-slate-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
+                      title="Rename document"
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                    </button>
                     <button
                       onClick={() => handleDelete(doc.id)}
                       className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
@@ -141,7 +169,7 @@ export default function Documents() {
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => !isUploading && setShowModal(false)} />
             <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }} className="relative bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
-              <h2 className="text-xl font-bold text-slate-800 mb-6">Upload Document</h2>
+              <h2 className="text-xl font-bold text-slate-800 mb-6">{editingDoc ? 'Edit Document' : 'Upload Document'}</h2>
               <form onSubmit={handleUpload}>
                 <div className="space-y-5">
                   <div>
@@ -165,12 +193,13 @@ export default function Documents() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-600 uppercase mb-2">File (JPG / PNG)</label>
+                    <label className="block text-xs font-bold text-slate-600 uppercase mb-2">File (JPG / PNG / PDF)</label>
                     <div className="border-2 border-dashed border-slate-200 rounded-xl p-6 text-center hover:bg-slate-50 transition-colors relative">
                       <input
-                        type="file" required accept="image/jpeg, image/png, image/webp"
+                        type="file" accept="image/jpeg, image/png, image/webp, application/pdf"
                         onChange={e => setSelectedFile(e.target.files[0])}
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        {...(!editingDoc ? { required: true } : {})}
                       />
                       {selectedFile ? (
                         <div className="flex flex-col items-center gap-2">
@@ -180,7 +209,10 @@ export default function Documents() {
                       ) : (
                         <div className="flex flex-col items-center gap-2">
                           <UploadCloud size={32} className="text-slate-400" />
-                          <span className="text-sm text-slate-500">Click or drag image here<br/><small>(Images only for AI OCR)</small></span>
+                          <span className="text-sm text-slate-500">
+                            {editingDoc ? 'Click to upload a new file (optional)' : 'Click or drag document here'}
+                            <br/><small>(Images or PDFs allowed)</small>
+                          </span>
                         </div>
                       )}
                     </div>
@@ -192,7 +224,7 @@ export default function Documents() {
                     Cancel
                   </button>
                   <button type="submit" disabled={isUploading} className="flex-1 py-3 font-semibold text-white bg-smd-blue hover:bg-blue-900 rounded-xl transition-colors flex items-center justify-center gap-2">
-                    {isUploading ? <Loader2 size={18} className="animate-spin" /> : 'Upload & Analyze'}
+                    {isUploading ? <Loader2 size={18} className="animate-spin" /> : (editingDoc ? 'Update Document' : 'Upload & Analyze')}
                   </button>
                 </div>
               </form>

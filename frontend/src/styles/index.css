@@ -29,8 +29,8 @@
 }
 
 /* ── Responsive Layout Utilities ── */
-.responsive-header { padding: 50px 4rem 60px; margin-top: 70px; }
-@media (max-width: 768px) { .responsive-header { padding: 40px 1.5rem 40px; margin-top: 60px; } }
+.responsive-header { padding: 20px 4rem 30px; margin-top: 70px; }
+@media (max-width: 768px) { .responsive-header { padding: 10px 1.5rem 15px; margin-top: 60px; } }
 
 .responsive-section { padding: 80px 4rem; }
 @media (max-width: 768px) { .responsive-section { padding: 50px 1.5rem; } }

@@ -58,8 +58,9 @@ export default function Academics() {
       </Helmet>
 
       {/* Header */}
-      <div className="responsive-header" style={{ background: 'linear-gradient(110deg,#0a143c 0%,#1a3aad 100%)' }}>
-        <motion.div initial="hidden" animate="visible" variants={containerVariants} style={{ maxWidth: '1160px', margin: '0 auto' }}>
+      <div className="responsive-header relative overflow-hidden" style={{ background: 'linear-gradient(110deg,#0a143c 0%,#1a3aad 100%)' }}>
+        <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
+        <motion.div initial="hidden" animate="visible" variants={containerVariants} style={{ maxWidth: '1160px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
           <motion.p variants={itemVariants} style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '10px' }}>Education</motion.p>
           <motion.h1 variants={itemVariants} style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 900, color: '#fff', marginBottom: '16px' }}>Academics</motion.h1>
           <motion.p variants={itemVariants} style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '560px', lineHeight: 1.75 }}>
@@ -82,7 +83,7 @@ export default function Academics() {
                 onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none' }}
               >
                 <div style={{ background: i % 2 === 0 ? '#0a143c' : '#f59e0b', padding: '20px 22px' }}>
-                  <p style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: i % 2 === 0 ? '#f59e0b' : '#0a143c', marginBottom: '4px' }}>{label}</p>
+                  <p style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: i % 2 === 0 ? '#f59e0b' : '#0a143c', marginBottom: '16px' }}>{label}</p>
                   <h3 style={{ fontWeight: 800, fontSize: '18px', color: i % 2 === 0 ? '#fff' : '#0a143c' }}>{range}</h3>
                 </div>
                 <div style={{ padding: '20px 22px', background: '#fff' }}>

@@ -1,15 +1,18 @@
 import { NavLink } from 'react-router-dom'
-import { LayoutDashboard, Users, BookOpen, Calendar, Bell, Image, FileText, BarChart2, GraduationCap, Briefcase, Folder } from 'lucide-react'
+import { LayoutDashboard, Users, UserPlus, BookOpen, Calendar, Bell, Image, FileText, BarChart2, GraduationCap, Briefcase, Folder, Trophy } from 'lucide-react'
+import logo from '../../assets/images/logo.webp'
 
 const MENUS = {
   admin:   [
     { to: '/admin',             icon: LayoutDashboard, label: 'Dashboard' },
+    { to: '/admin/teachers',    icon: UserPlus,        label: 'Teachers' },
     { to: '/admin/students',    icon: Users,           label: 'Students' },
     { to: '/admin/admissions',  icon: FileText,        label: 'Admissions' },
+    { to: '/admin/results',     icon: Trophy,          label: 'Top Results' },
     { to: '/admin/notices',     icon: Bell,            label: 'Notices' },
     { to: '/admin/gallery',     icon: Image,           label: 'Gallery' },
     { to: '/admin/careers',     icon: Briefcase,       label: 'Careers' },
-    { to: '/admin/documents',   icon: Folder,          label: 'Documents' },
+    { to: '/admin/documents',   icon: Folder,          label: 'MPD Documents' },
   ],
   teacher: [
     { to: '/teacher',            icon: LayoutDashboard, label: 'Dashboard' },
@@ -44,9 +47,9 @@ export default function Sidebar({ role, isOpen, setIsOpen }) {
         transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
       `}>
-      <div className="flex items-center gap-2 px-6 py-5 border-b border-white/20">
-        <GraduationCap size={24} className="text-smd-gold" />
-        <span className="font-bold text-sm">SMD Campus</span>
+      <div className="flex items-center gap-3 px-6 py-5 border-b border-white/20">
+        <img src={logo} alt="SMD Logo" className="w-8 h-8 object-contain" />
+        <span className="font-bold text-sm leading-tight">SMD Vidya<br/>Mandir</span>
       </div>
       <nav className="flex-1 px-3 py-4 space-y-1">
         {items.map(({ to, icon: Icon, label }) => (

@@ -35,10 +35,19 @@ export const resumeUpload = multer({ storage: resumeStorage })
 
 const documentStorage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: {
-    folder: 'smd-campus-documents',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
-    transformation: [{ width: 1600, crop: 'limit' }] // keep high res for OCR
+  params: async (req, file) => {
+    if (file.mimetype === 'application/pdf') {
+      return {
+        folder: 'smd-campus-documents',
+        format: 'pdf',
+        resource_type: 'raw'
+      }
+    }
+    return {
+      folder: 'smd-campus-documents',
+      allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+      transformation: [{ width: 1600, crop: 'limit' }] // keep high res for OCR
+    }
   }
 })
 

@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useAuth } from '@/context/AuthContext'
 import { GraduationCap, Eye, EyeOff, AlertCircle } from 'lucide-react'
+import logo from '../../assets/images/logo.webp'
 import logoImg from '@/assets/images/logo.webp'
 import toast from 'react-hot-toast'
 
@@ -66,13 +67,11 @@ export default function Login() {
           <div style={{ background: '#fff', borderRadius: 24, padding: '40px 36px', boxShadow: '0 24px 80px rgba(0,0,0,0.3)' }}>
             {/* Logo */}
             <div style={{ textAlign: 'center', marginBottom: 28 }}>
-              <div style={{
-                width: 72, height: 72, background: 'linear-gradient(135deg, #0a143c, #1a3aad)',
-                borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                margin: '0 auto 16px', boxShadow: '0 8px 24px rgba(10,20,60,0.3)',
-              }}>
-                <GraduationCap size={34} color="#f59e0b" />
-              </div>
+              <img 
+                src={logo} 
+                alt="SMD Logo" 
+                style={{ width: 80, height: 80, objectFit: 'contain', margin: '0 auto 16px' }} 
+              />
               <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0a143c' }}>SMD Vidya Mandir</h1>
               <p style={{ fontSize: 13, color: '#6b7280', marginTop: 4 }}>Sign in to access your portal</p>
             </div>

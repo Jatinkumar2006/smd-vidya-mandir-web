@@ -14,6 +14,8 @@ import attendanceRoutes from './routes/attendance.js'
 import contactRoutes    from './routes/contact.js'
 import careerRoutes     from './routes/careers.js'
 import paymentRoutes    from './routes/payments.js'
+import teacherRoutes    from './routes/teachers.js'
+import resultsRoutes    from './routes/results.js'
 
 dotenv.config()
 
@@ -45,6 +47,8 @@ app.use('/api/attendance',  attendanceRoutes)
 app.use('/api/contact',     contactRoutes)
 app.use('/api/careers',     careerRoutes)
 app.use('/api/payments',    paymentRoutes)
+app.use('/api/teachers',    teacherRoutes)
+app.use('/api/results',     resultsRoutes)
 
 // 404 handler
 app.use((req, res) => res.status(404).json({ message: 'Route not found' }))

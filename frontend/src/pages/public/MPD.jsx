@@ -17,28 +17,7 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] } }
 }
 
-const INITIAL_MPD_DOCS = [
-  {
-    category: 'General Documents',
-    items: [
-      { title: 'Academic Calendar', file: null },
-      { title: 'Building Safety', file: null },
-      { title: 'CBSE - Affiliation', file: '/doc/Cbse-Affiliation.pdf' },
-      { title: 'Fee Structure', file: null },
-      { title: 'Land Certificate', file: '/doc/Land-Certificate.pdf' },
-    ],
-  },
-  {
-    category: 'Certifications & Reports',
-    items: [
-      { title: 'NOC', file: '/doc/NOC.pdf' },
-      { title: 'Recognition', file: '/doc/Recognition.pdf' },
-      { title: 'Self Certificate', file: '/doc/Self-Certificate.pdf' },
-      { title: 'Society Registration', file: '/doc/Society-Registration.pdf' },
-      { title: 'Water-Test-Report', file: '/doc/Water-Test-Report.pdf' },
-    ],
-  },
-]
+// Documents will be fetched dynamically from the database
 
 const INFO_TABLE = [
   { label: 'Name', value: 'Shri Mangalchand Didwaniya Vidya Mandir' },
@@ -55,23 +34,26 @@ const INFO_TABLE = [
 ]
 
 export default function MPD() {
-  const [docs, setDocs] = useState(INITIAL_MPD_DOCS)
+  const [docs, setDocs] = useState([])
 
   useEffect(() => {
-    // Fetch dynamic documents from DB and merge them into the static layout
+    // Fetch dynamic documents from DB and group them by category
     api.get('/documents').then(res => {
       const dbDocs = res.data
-      setDocs(prevDocs => 
-        prevDocs.map(category => ({
-          ...category,
-          items: category.items.map(item => {
-            // If the admin uploaded a document with the exact same title, override the file URL
-            const matchedDbDoc = dbDocs.find(d => d.title.toLowerCase() === item.title.toLowerCase())
-            if (matchedDbDoc) return { ...item, file: matchedDbDoc.file_url }
-            return item
-          })
-        }))
-      )
+      
+      const grouped = dbDocs.reduce((acc, doc) => {
+        const category = doc.doc_type || 'General Documents'
+        if (!acc[category]) acc[category] = []
+        acc[category].push({ title: doc.title, file: doc.file_url })
+        return acc
+      }, {})
+
+      const formattedDocs = Object.keys(grouped).map(category => ({
+        category,
+        items: grouped[category]
+      }))
+
+      setDocs(formattedDocs)
     }).catch(err => console.error("Failed to load documents", err))
   }, [])
 
@@ -83,8 +65,9 @@ export default function MPD() {
       </Helmet>
 
       {/* Header */}
-      <div className="responsive-header" style={{ background: 'linear-gradient(110deg,#0a143c 0%,#1a3aad 100%)' }}>
-        <motion.div initial="hidden" animate="visible" variants={containerVariants} style={{ maxWidth: '1160px', margin: '0 auto' }}>
+      <div className="responsive-header relative overflow-hidden" style={{ background: 'linear-gradient(110deg,#0a143c 0%,#1a3aad 100%)' }}>
+        <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
+        <motion.div initial="hidden" animate="visible" variants={containerVariants} style={{ maxWidth: '1160px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
           <motion.p variants={itemVariants} style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '10px' }}>CBSE Compliance</motion.p>
           <motion.h1 variants={itemVariants} style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 900, color: '#fff', marginBottom: '16px' }}>Mandatory Public Disclosure</motion.h1>
           <motion.p variants={itemVariants} style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '600px', lineHeight: 1.75 }}>
