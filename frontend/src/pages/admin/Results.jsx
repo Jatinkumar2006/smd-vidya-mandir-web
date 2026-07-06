@@ -167,12 +167,12 @@ export default function AdminResults() {
                 <div>
                   <label className="block text-xs font-bold text-slate-600 uppercase mb-2">Student Name *</label>
                   <input type="text" required value={form.student_name} onChange={e => setForm({ ...form, student_name: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border-1.5 border-slate-200 outline-none focus:border-smd-blue transition-colors" />
+                    className="w-full px-4 py-2.5 rounded-xl border-2 border-slate-200 outline-none focus:border-smd-blue transition-colors bg-white text-slate-800" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-600 uppercase mb-2">Year *</label>
                   <input type="number" required value={form.year} onChange={e => setForm({ ...form, year: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border-1.5 border-slate-200 outline-none focus:border-smd-blue transition-colors" />
+                    className="w-full px-4 py-2.5 rounded-xl border-2 border-slate-200 outline-none focus:border-smd-blue transition-colors bg-white text-slate-800" />
                 </div>
               </div>
 
@@ -180,19 +180,19 @@ export default function AdminResults() {
                 <div>
                   <label className="block text-xs font-bold text-slate-600 uppercase mb-2">Class/Standard *</label>
                   <input type="text" required placeholder="e.g. 12th Science" value={form.student_class} onChange={e => setForm({ ...form, student_class: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border-1.5 border-slate-200 outline-none focus:border-smd-blue transition-colors" />
+                    className="w-full px-4 py-2.5 rounded-xl border-2 border-slate-200 outline-none focus:border-smd-blue transition-colors bg-white text-slate-800" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-600 uppercase mb-2">Score/Percentage *</label>
                   <input type="text" required placeholder="e.g. 98% or 9.8 CGPA" value={form.score} onChange={e => setForm({ ...form, score: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border-1.5 border-slate-200 outline-none focus:border-smd-blue transition-colors" />
+                    className="w-full px-4 py-2.5 rounded-xl border-2 border-slate-200 outline-none focus:border-smd-blue transition-colors bg-white text-slate-800" />
                 </div>
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-600 uppercase mb-2">Description (Optional)</label>
                 <input type="text" placeholder="e.g. District Topper" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border-1.5 border-slate-200 outline-none focus:border-smd-blue transition-colors" />
+                  className="w-full px-4 py-2.5 rounded-xl border-2 border-slate-200 outline-none focus:border-smd-blue transition-colors bg-white text-slate-800" />
               </div>
 
               <div>

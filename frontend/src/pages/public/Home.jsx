@@ -1,13 +1,14 @@
-import { useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { Phone, ArrowRight, BookOpen, Monitor, Trophy, Zap } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { Phone, ArrowRight, BookOpen, Monitor, Trophy, Zap, ChevronRight, X } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import CountUp from 'react-countup'
 
 import buildingImg from '@/assets/images/building.webp'
 import logoImg     from '@/assets/images/logo.webp'
 import VanillaTilt from 'vanilla-tilt'
+import api from '@/services/api'
 
 // ── Data ─────────────────────────────────────────────────
 
@@ -39,13 +40,6 @@ const FEATURES = [
     title: 'Sports & Activities',
     desc:  'Well-equipped facilities and extracurriculars for holistic development.',
   },
-]
-
-const NOTICES = [
-  { day: '15', month: 'Aug', tag: '🎉 Event',        title: 'Independence Day Celebrations - Flag Hoisting at 8:00 AM' },
-  { day: '05', month: 'Sep', tag: '📅 Holiday',      title: 'Teacher’s Day - Half Day for Students'                    },
-  { day: '10', month: 'Oct', tag: '📝 Exam',         title: 'Half-Yearly Examinations Begin'                           },
-  { day: '25', month: 'Jun', tag: '📢 Announcement', title: 'Admissions Open for Session 2025–26 - All Classes'      },
 ]
 
 const QUICK_LINKS = [
@@ -82,6 +76,20 @@ const heroItemVariants = {
  */
 export default function Home() {
   const heroBgRef = useRef(null)
+  const [notices, setNotices] = useState([])
+  const [selectedNotice, setSelectedNotice] = useState(null)
+
+  useEffect(() => {
+    const fetchNotices = async () => {
+      try {
+        const { data } = await api.get('/notices')
+        setNotices(data)
+      } catch (err) {
+        console.error('Failed to load notices:', err)
+      }
+    }
+    fetchNotices()
+  }, [])
 
   useEffect(() => {
     // 1. Tilt on Hero Background removed as requested
@@ -385,18 +393,37 @@ export default function Home() {
           <div className="responsive-grid-2" style={{ gap: '28px' }}>
             {/* Notices */}
             <div>
-              {NOTICES.map(({ day, month, tag, title }) => (
-                <div key={title} style={{ display: 'flex', gap: '14px', padding: '15px 0', borderBottom: '1px solid #e8ecf5' }}>
-                  <div style={{ flexShrink: 0, width: '50px', background: '#0a143c', color: '#fff', borderRadius: '9px', padding: '8px 6px', textAlign: 'center', fontSize: '11px', fontWeight: 700, lineHeight: 1.3 }}>
-                    <strong style={{ display: 'block', fontSize: '19px', lineHeight: 1 }}>{day}</strong>
-                    {month}
+              {notices.length === 0 ? (
+                <p style={{ color: '#6b7280', padding: '15px 0' }}>No recent notices.</p>
+              ) : notices.slice(0, 6).map((notice, index) => {
+                const date = new Date(notice.created_at)
+                const day = date.getDate().toString().padStart(2, '0')
+                const month = date.toLocaleString('default', { month: 'short' })
+                
+                return (
+                  <div 
+                    key={notice.id} 
+                    onClick={() => setSelectedNotice(notice)}
+                    style={{ padding: '12px 0', borderBottom: index === notices.slice(0, 6).length - 1 ? 'none' : '1px solid #e8ecf5', cursor: 'pointer', transition: 'background 0.2s' }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = '#f8fafc'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                  >
+                    <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', padding: '0 8px' }}>
+                      <div style={{ flexShrink: 0, width: '45px', background: '#0a143c', color: '#fff', borderRadius: '8px', padding: '6px 4px', textAlign: 'center', fontSize: '10px', fontWeight: 700, lineHeight: 1.2 }}>
+                        <strong style={{ display: 'block', fontSize: '16px', lineHeight: 1 }}>{day}</strong>
+                        {month}
+                      </div>
+                      <div style={{ flex: 1, paddingTop: '1px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <p style={{ fontSize: '10px', fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '2px' }}>📢 Announcement</p>
+                          <ChevronRight size={14} style={{ color: '#9ca3af' }} />
+                        </div>
+                        <p style={{ fontWeight: 600, fontSize: '13px', color: '#111827', lineHeight: 1.35 }}>{notice.title}</p>
+                      </div>
+                    </div>
                   </div>
-                  <div style={{ paddingTop: '2px' }}>
-                    <p style={{ fontSize: '10.5px', fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '3px' }}>{tag}</p>
-                    <p style={{ fontWeight: 600, fontSize: '13.5px', color: '#111827', lineHeight: 1.4 }}>{title}</p>
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
 
             {/* Quick links */}
@@ -458,6 +485,37 @@ export default function Home() {
           </Link>
         </div>
       </section>
+      <AnimatePresence>
+        {selectedNotice && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedNotice(null)} />
+            <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }} className="relative bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden z-10 flex flex-col max-h-[85vh]">
+              <div className="flex justify-between items-start p-6 border-b border-gray-100 bg-slate-50">
+                <div className="pr-4">
+                  <span className="inline-block px-3 py-1 bg-smd-gold/20 text-smd-gold text-xs font-bold uppercase tracking-wider rounded-full mb-3">
+                    📢 Announcement
+                  </span>
+                  <h3 className="text-xl font-bold text-smd-navy leading-snug">{selectedNotice.title}</h3>
+                  <p className="text-sm text-gray-500 mt-2">
+                    {new Date(selectedNotice.created_at).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                  </p>
+                </div>
+                <button onClick={() => setSelectedNotice(null)} className="p-2 text-gray-400 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors">
+                  <X size={20} />
+                </button>
+              </div>
+              <div className="p-6 overflow-y-auto text-gray-600 text-sm leading-relaxed whitespace-pre-wrap">
+                {selectedNotice.content}
+              </div>
+              <div className="p-4 bg-gray-50 border-t border-gray-100 text-center">
+                <button onClick={() => setSelectedNotice(null)} className="px-6 py-2 bg-smd-navy text-white text-sm font-medium rounded-lg hover:bg-[#1a3aad] transition-colors">
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

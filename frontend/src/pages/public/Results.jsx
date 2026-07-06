@@ -31,11 +31,18 @@ export default function Results() {
   }, [])
 
   const groupedResults = useMemo(() => {
-    return results.reduce((acc, result) => {
+    const grouped = results.reduce((acc, result) => {
       if (!acc[result.year]) acc[result.year] = []
       acc[result.year].push(result)
       return acc
     }, {})
+    
+    // Sort each year's results by score (descending)
+    Object.keys(grouped).forEach(year => {
+      grouped[year].sort((a, b) => parseFloat(b.score) - parseFloat(a.score))
+    })
+    
+    return grouped
   }, [results])
 
   const sortedYears = Object.keys(groupedResults).sort((a, b) => b - a)
@@ -45,44 +52,53 @@ export default function Results() {
     setExpandedYears(prev => ({ ...prev, [year]: !prev[year] }))
   }
 
-  const StudentCard = ({ result, featured = false }) => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className={`relative bg-white rounded-2xl overflow-hidden border border-slate-100 flex flex-col items-center text-center p-6 ${
-        featured ? 'shadow-2xl shadow-smd-blue/10' : 'shadow-lg hover:shadow-xl'
-      } transition-all duration-300 group`}
-    >
-      <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-smd-gold to-yellow-300" />
-      
-      <div className="relative mb-5">
-        <div className="w-28 h-28 rounded-full p-1 bg-gradient-to-tr from-smd-gold to-smd-blue shadow-lg">
-          <img src={result.photo_url} alt={result.student_name} className="w-full h-full rounded-full object-cover border-4 border-white" />
-        </div>
-        {featured && (
-          <div className="absolute -bottom-2 -right-2 bg-smd-gold text-white p-1.5 rounded-full shadow-md">
-            <Award size={20} />
+  const StudentCard = ({ result, featured = false }) => {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className={`relative bg-white rounded-2xl overflow-hidden border border-slate-100 flex flex-col items-center text-center p-4 ${
+          featured ? 'shadow-2xl shadow-smd-blue/10' : 'shadow-lg hover:shadow-xl'
+        } transition-all duration-300 group`}
+      >
+        <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-smd-gold to-yellow-300" />
+        
+        {result.description && (
+          <div 
+            className="absolute top-6 left-1.5 text-smd-navy/60 text-[8px] font-black tracking-[0.15em] uppercase z-0 pointer-events-none"
+            style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+          >
+            {result.description}
           </div>
         )}
-      </div>
-
-      <h3 className="text-xl font-bold text-smd-navy mb-1 group-hover:text-smd-blue transition-colors">
-        {result.student_name}
-      </h3>
-      <p className="text-sm font-semibold text-slate-500 mb-4">{result.class}</p>
-
-      <div className="mt-auto bg-slate-50 w-full py-3 rounded-xl border border-slate-100">
-        <div className="flex items-center justify-center gap-2">
-          <Star size={18} className="text-smd-gold fill-smd-gold" />
-          <span className="text-lg font-black text-smd-navy">{result.score}</span>
+        
+        <div className="relative mb-3 w-full flex justify-center">
+          <div className="relative w-20 h-20 rounded-full p-1 bg-gradient-to-tr from-smd-gold to-smd-blue shadow-lg">
+            <img src={result.photo_url} alt={result.student_name} className="w-full h-full rounded-full object-cover border-4 border-white" />
+            
+            {featured && !result.description && (
+              <div className="absolute -bottom-1 -right-1 bg-smd-gold text-white p-1 rounded-full shadow-md z-10">
+                <Award size={16} />
+              </div>
+            )}
+          </div>
         </div>
-        {result.description && (
-          <p className="text-xs text-slate-500 mt-1 font-medium px-2">{result.description}</p>
-        )}
-      </div>
-    </motion.div>
-  )
+
+        <h3 className="text-sm md:text-base mb-1 font-bold text-smd-navy group-hover:text-smd-blue transition-colors whitespace-nowrap overflow-hidden text-ellipsis w-full px-2">
+          {result.student_name}
+        </h3>
+        <p className="text-xs mb-3 font-semibold text-slate-500">{result.class}</p>
+
+        <div className="mt-auto bg-slate-50 w-full py-2 rounded-xl border border-slate-100">
+          <div className="flex items-center justify-center gap-1.5">
+            <Star size={14} className="text-smd-gold fill-smd-gold" />
+            <span className="text-base font-black text-smd-navy">{result.score}</span>
+          </div>
+        </div>
+      </motion.div>
+    )
+  }
 
   return (
     <>
@@ -120,7 +136,7 @@ export default function Results() {
                     <div className="h-1.5 w-24 bg-smd-gold mx-auto rounded-full" />
                   </div>
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
                     {groupedResults[currentYear].map(result => (
                       <StudentCard key={result.id} result={result} featured={true} />
                     ))}
@@ -161,7 +177,7 @@ export default function Results() {
                               exit={{ height: 0, opacity: 0 }}
                               className="border-t border-slate-100"
                             >
-                              <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 bg-slate-50/50">
+                              <div className="p-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 bg-slate-50/50">
                                 {groupedResults[year].map(result => (
                                   <StudentCard key={result.id} result={result} />
                                 ))}
