@@ -22,7 +22,7 @@ export default function Careers() {
   const [selectedJob, setSelectedJob] = useState(null)
   
   // Form State
-  const [formData, setFormData] = useState({ applicant_name: '', email: '', phone: '', experience: '' })
+  const [formData, setFormData] = useState({ applicant_name: '', email: '', phone: '', experience: '', expYears: '', expMonths: '' })
   const [resumeFile, setResumeFile] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
@@ -65,7 +65,7 @@ export default function Careers() {
     setShowModal(true)
     setSubmitSuccess(false)
     setShowConfirm(false)
-    setFormData({ applicant_name: '', email: '', phone: '', experience: '' })
+    setFormData({ applicant_name: '', email: '', phone: '', experience: '', expYears: '', expMonths: '' })
     setResumeFile(null)
   }
 
@@ -312,7 +312,16 @@ export default function Careers() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1">Total Experience</label>
-                    <input required type="text" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-smd-blue/20 focus:border-smd-blue" placeholder="e.g. 3 Years, 5 Months" value={formData.experience} onChange={e => setFormData({...formData, experience: e.target.value})} />
+                    <div className="flex gap-4">
+                      <select required className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-smd-blue/20 focus:border-smd-blue" value={formData.expYears} onChange={e => setFormData({...formData, expYears: e.target.value, experience: `${e.target.value} Years, ${formData.expMonths || '0'} Months`})}>
+                        <option value="" disabled>Years</option>
+                        {[...Array(41)].map((_, i) => <option key={`y-${i}`} value={i}>{i} {i === 1 ? 'Year' : 'Years'}</option>)}
+                      </select>
+                      <select required className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-smd-blue/20 focus:border-smd-blue" value={formData.expMonths} onChange={e => setFormData({...formData, expMonths: e.target.value, experience: `${formData.expYears || '0'} Years, ${e.target.value} Months`})}>
+                        <option value="" disabled>Months</option>
+                        {[...Array(12)].map((_, i) => <option key={`m-${i}`} value={i}>{i} {i === 1 ? 'Month' : 'Months'}</option>)}
+                      </select>
+                    </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">Upload Resume (PDF only)</label>

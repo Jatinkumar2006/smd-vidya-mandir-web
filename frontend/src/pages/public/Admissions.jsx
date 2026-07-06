@@ -149,7 +149,7 @@ export default function Admissions() {
                     </div>
                     <div>
                       <label style={labelStyle}>Date of Birth *</label>
-                      <input name="dob" value={form.dob} onChange={handle} required type="date" style={inputStyle} onFocus={e => e.target.style.borderColor='#0a143c'} onBlur={e => e.target.style.borderColor='#e5e7eb'} />
+                      <input name="dob" value={form.dob} onChange={handle} required type="date" style={inputStyle} onFocus={e => e.target.style.borderColor='#0a143c'} onBlur={e => e.target.style.borderColor='#e5e7eb'} onClick={e => {try { e.target.showPicker() } catch(err) {}}} />
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
