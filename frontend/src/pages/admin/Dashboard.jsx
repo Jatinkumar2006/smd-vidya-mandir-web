@@ -58,7 +58,7 @@ export default function AdminDashboard() {
 
   return (
     <>
-      <Helmet><title>Admin Dashboard – SMD Digital Campus</title></Helmet>
+      <Helmet><title>Admin Dashboard – SMD Vidya Mandir</title></Helmet>
 
       <h1 style={{ fontSize: '1.6rem', fontWeight: 700, color: C.navy, marginBottom: '1.5rem' }}>
         Dashboard Overview

@@ -62,7 +62,7 @@ export default function AdminNotices() {
 
   return (
     <>
-      <Helmet><title>Notices – Admin – SMD Digital Campus</title></Helmet>
+      <Helmet><title>Notices – Admin – SMD Vidya Mandir</title></Helmet>
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: 12 }}>
         <h1 style={{ fontSize: '1.6rem', fontWeight: 700, color: C.navy }}>Notices</h1>

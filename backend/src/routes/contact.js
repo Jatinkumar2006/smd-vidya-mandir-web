@@ -10,7 +10,7 @@ router.post('/', async (req, res) => {
     if (!name || !message) return res.status(400).json({ message: 'Name and message are required' })
 
     await pool.query(
-      'INSERT INTO contacts (name, email, phone, subject, message) VALUES (?, ?, ?, ?, ?)',
+      'INSERT INTO contacts (name, email, phone, subject, message) VALUES ($1, $2, $3, $4, $5)',
       [name, email || null, phone || null, subject || null, message]
     )
     res.status(201).json({ message: 'Your message has been received. We will get back to you soon!' })

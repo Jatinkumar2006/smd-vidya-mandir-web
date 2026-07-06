@@ -1,22 +1,48 @@
 import express from 'express'
 import Groq    from 'groq-sdk'
+import pool from '../config/db.js'
 
 const router = express.Router()
 const groq   = new Groq({ apiKey: process.env.GROQ_API_KEY })
 
-const SCHOOL_CONTEXT = `You are the official AI assistant for SMD School (Shree Mangal Chand Didwania Vidya Mandir), 
+const BASE_CONTEXT = `You are the official AI assistant for SMD School (Shree Mangal Chand Didwania Vidya Mandir), 
 a CBSE-affiliated school in Khori Brahmanan, Raghunathgarh, Sikar, Rajasthan. 
 Contact: +91-9001995272 | Email: smdvidyamandir@gmail.com
 Answer ONLY school-related questions. Be friendly, concise, and helpful.
-If asked something unrelated to the school, politely redirect the user.`
 
-// POST /api/ai/chat — public chatbot
+CRITICAL INSTRUCTION: You must ONLY answer using the website context provided below. 
+If the user asks for information (like specific fees, holidays, rules) that is NOT explicitly mentioned in the context below, you MUST reply with exactly this sentiment:
+"I don't have that specific information right now. Please contact the school directly at +91-9001995272 or visit the school office for accurate details."
+DO NOT GUESS OR MAKE UP INFORMATION.
+
+=== LIVE WEBSITE CONTEXT ===`
+
+// POST /api/ai/chat — public chatbot with RAG Context Injection
 router.post('/chat', async (req, res) => {
   try {
     const { message, history = [] } = req.body
 
+    // 1. Fetch live data from database
+    const [noticesRes, careersRes, docsRes] = await Promise.all([
+      pool.query('SELECT title, content FROM notices WHERE active = TRUE ORDER BY created_at DESC LIMIT 5'),
+      pool.query('SELECT title, department, experience FROM careers WHERE active = TRUE'),
+      pool.query('SELECT title, extracted_text FROM school_documents WHERE active = TRUE')
+    ])
+
+    let dynamicContext = '\n\nNOTICES:\n'
+    noticesRes.rows.forEach(n => dynamicContext += `- ${n.title}: ${n.content}\n`)
+
+    dynamicContext += '\nCAREERS / JOB OPENINGS:\n'
+    if (careersRes.rows.length === 0) dynamicContext += 'No current job openings.\n'
+    careersRes.rows.forEach(c => dynamicContext += `- Hiring: ${c.title} (${c.department}) - Requires: ${c.experience}\n`)
+
+    dynamicContext += '\nSCHOOL DOCUMENTS & FEE CHARTS:\n'
+    docsRes.rows.forEach(d => dynamicContext += `- ${d.title}:\n  ${d.extracted_text}\n`)
+
+    const FINAL_SYSTEM_PROMPT = BASE_CONTEXT + dynamicContext
+
     const messages = [
-      { role: 'system', content: SCHOOL_CONTEXT },
+      { role: 'system', content: FINAL_SYSTEM_PROMPT },
       ...history.map(m => ({
         role:    m.role === 'user' ? 'user' : 'assistant',
         content: m.content,

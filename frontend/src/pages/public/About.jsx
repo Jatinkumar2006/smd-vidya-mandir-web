@@ -9,13 +9,13 @@ const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.2, delayChildren: 0.1 }
+    transition: { staggerChildren: 0.1, delayChildren: 0.05 }
   }
 }
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] } }
 }
 
 const TEAM = [
@@ -28,7 +28,7 @@ const VALUES = [
   { icon: '🎯', title: 'Excellence',   desc: 'We pursue the highest standards in academics and character development.' },
   { icon: '🤝', title: 'Integrity',    desc: 'Honesty and ethics are the foundation of everything we do.' },
   { icon: '💡', title: 'Innovation',   desc: 'Encouraging curiosity, creativity and modern thinking in every student.' },
-  { icon: '🌱', title: 'Growth',       desc: 'Every child grows at their own pace — we nurture each one individually.' },
+  { icon: '🌱', title: 'Growth',       desc: 'Every child grows at their own pace - we nurture each one individually.' },
 ]
 
 // ── Component ─────────────────────────────────────────────
@@ -41,8 +41,8 @@ export default function About() {
   return (
     <>
       <Helmet>
-        <title>About Us – SMD Digital Campus</title>
-        <meta name="description" content="Learn about Shree Mangal Chand Didwania Vidya Mandir — our history, vision, mission and leadership." />
+        <title>About Us – SMD Vidya Mandir</title>
+        <meta name="description" content="Learn about Shree Mangal Chand Didwania Vidya Mandir - our history, vision, mission and leadership." />
       </Helmet>
 
       {/* Page Header */}
@@ -75,7 +75,7 @@ export default function About() {
               15+ Years of Shaping Young Minds
             </motion.h2>
             <motion.p variants={itemVariants} style={{ color: '#4b5563', lineHeight: 1.82, marginBottom: '14px', fontSize: '15px' }}>
-              Shree Mangal Chand Didwania Vidya Mandir was established in 2009 with a single vision — to provide world-class CBSE education to students in rural Rajasthan. What started as a small school has grown into a thriving institution serving 500+ students.
+              Shree Mangal Chand Didwania Vidya Mandir was established in 2009 with a single vision - to provide world-class CBSE education to students in rural Rajasthan. What started as a small school has grown into a thriving institution serving 500+ students.
             </motion.p>
             <motion.p variants={itemVariants} style={{ color: '#4b5563', lineHeight: 1.82, marginBottom: '24px', fontSize: '15px' }}>
               Affiliated to CBSE and located in Khori Brahmanan, Raghunathgarh, we have consistently produced outstanding results while ensuring every child receives individual attention and holistic development.
@@ -83,7 +83,7 @@ export default function About() {
             <motion.div variants={itemVariants} style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '15px 18px', background: '#fff8ed', borderLeft: '4px solid #f59e0b', borderRadius: '0 10px 10px 0' }}>
               <span style={{ fontSize: '22px', flexShrink: 0 }}>🪔</span>
               <span style={{ fontFamily: "'Merriweather',serif", fontSize: '14px', fontStyle: 'italic', color: '#0a143c', fontWeight: 700 }}>
-                "तमसो मा ज्योतिर्गमय" — Lead us from darkness to light
+                "तमसो मा ज्योतिर्गमय" - Lead us from darkness to light
               </span>
             </motion.div>
           </motion.div>
@@ -102,14 +102,14 @@ export default function About() {
               <div style={{ fontSize: '36px', marginBottom: '16px' }}>🔭</div>
               <h3 style={{ fontFamily: "'Merriweather',serif", fontSize: '1.3rem', fontWeight: 700, color: '#f59e0b', marginBottom: '14px' }}>Our Vision</h3>
               <p style={{ color: 'rgba(255,255,255,0.78)', lineHeight: 1.8, fontSize: '15px' }}>
-                To be a premier educational institution that empowers every student with knowledge, values, and skills to become responsible global citizens — while staying rooted in Indian culture and tradition.
+                To be a premier educational institution that empowers every student with knowledge, values, and skills to become responsible global citizens - while staying rooted in Indian culture and tradition.
               </p>
             </motion.div>
             <motion.div variants={itemVariants} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '18px', padding: '36px' }}>
               <div style={{ fontSize: '36px', marginBottom: '16px' }}>🎯</div>
               <h3 style={{ fontFamily: "'Merriweather',serif", fontSize: '1.3rem', fontWeight: 700, color: '#0a143c', marginBottom: '14px' }}>Our Mission</h3>
               <p style={{ color: '#4b5563', lineHeight: 1.8, fontSize: '15px' }}>
-                To provide a nurturing, inclusive, and technology-enabled learning environment where students develop critical thinking, creativity, and character — achieving academic excellence while growing as compassionate human beings.
+                To provide a nurturing, inclusive, and technology-enabled learning environment where students develop critical thinking, creativity, and character - achieving academic excellence while growing as compassionate human beings.
               </p>
             </motion.div>
           </div>

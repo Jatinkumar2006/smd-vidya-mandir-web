@@ -31,7 +31,7 @@ export default function StudentDashboard() {
 
   return (
     <>
-      <Helmet><title>Student Dashboard – SMD Digital Campus</title></Helmet>
+      <Helmet><title>Student Dashboard – SMD Vidya Mandir</title></Helmet>
 
       <div style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '1.6rem', fontWeight: 700, color: C.navy }}>Welcome, {user?.name}! 🎓</h1>
@@ -49,7 +49,7 @@ export default function StudentDashboard() {
           <Calendar size={28} color={attColor} />
           <p style={{ fontSize: '2.2rem', fontWeight: 800, marginTop: 8, color: attColor, lineHeight: 1 }}>{loading ? '...' : `${attPct}%`}</p>
           <p style={{ fontSize: 13, color: C.muted, marginTop: 4 }}>Attendance</p>
-          {attPct < 75 && <p style={{ fontSize: 11, color: '#ef4444', marginTop: 4, fontWeight: 600 }}>⚠ Below 75% — attend more classes</p>}
+          {attPct < 75 && <p style={{ fontSize: 11, color: '#ef4444', marginTop: 4, fontWeight: 600 }}>⚠ Below 75% - attend more classes</p>}
         </div>
         <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 16, padding: '24px 20px' }}>
           <Award size={28} color={C.gold} />

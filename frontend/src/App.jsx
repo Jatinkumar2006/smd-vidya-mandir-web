@@ -12,6 +12,7 @@ import Gallery from '@/pages/public/Gallery'
 import Contact from '@/pages/public/Contact'
 import Admissions from '@/pages/public/Admissions'
 import MPD from '@/pages/public/MPD'
+import Careers from '@/pages/public/Careers'
 import NotFound from '@/pages/public/NotFound'
 
 // Auth
@@ -23,6 +24,8 @@ import AdminStudents from '@/pages/admin/Students'
 import AdminGallery from '@/pages/admin/Gallery'
 import AdminNotices from '@/pages/admin/Notices'
 import AdminAdmissions from '@/pages/admin/Admissions'
+import AdminCareers from '@/pages/admin/Careers'
+import AdminDocuments from '@/pages/admin/Documents'
 
 // Student Pages
 import StudentDashboard from '@/pages/student/Dashboard'
@@ -60,6 +63,7 @@ export default function App() {
           <Route path="/gallery"     element={<Gallery />} />
           <Route path="/contact"     element={<Contact />} />
           <Route path="/admissions"  element={<Admissions />} />
+          <Route path="/careers"     element={<Careers />} />
           <Route path="/mpd"         element={<MPD />} />
           <Route path="/login"       element={<Login />} />
         </Route>
@@ -72,6 +76,8 @@ export default function App() {
             <Route path="/admin/gallery"      element={<AdminGallery />} />
             <Route path="/admin/notices"      element={<AdminNotices />} />
             <Route path="/admin/admissions"   element={<AdminAdmissions />} />
+            <Route path="/admin/careers"      element={<AdminCareers />} />
+            <Route path="/admin/documents"    element={<AdminDocuments />} />
           </Route>
         </Route>
 

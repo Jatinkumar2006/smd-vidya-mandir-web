@@ -13,7 +13,8 @@ export default function AdminGallery() {
   const [loading, setLoading]     = useState(true)
   const [filterCat, setFilter]    = useState('all')
   const [showForm, setShowForm]   = useState(false)
-  const [form, setForm]           = useState({ title: '', image_url: '', category: 'general' })
+  const [form, setForm]           = useState({ title: '', category: 'general' })
+  const [files, setFiles]         = useState([])
   const [saving, setSaving]       = useState(false)
   const [preview, setPreview]     = useState(null)
 
@@ -32,9 +33,14 @@ export default function AdminGallery() {
   const handleAdd = async (e) => {
     e.preventDefault(); setSaving(true)
     try {
-      await api.post('/gallery', form)
-      toast.success('Gallery item added!')
-      setForm({ title: '', image_url: '', category: 'general' }); setShowForm(false); load()
+      const formData = new FormData()
+      formData.append('title', form.title)
+      formData.append('category', form.category)
+      files.forEach(f => formData.append('images', f))
+
+      await api.post('/gallery', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+      toast.success('Gallery items added!')
+      setForm({ title: '', category: 'general' }); setFiles([]); setShowForm(false); load()
     } catch { toast.error('Failed to add item') }
     finally { setSaving(false) }
   }
@@ -48,7 +54,7 @@ export default function AdminGallery() {
 
   return (
     <>
-      <Helmet><title>Gallery – Admin – SMD Digital Campus</title></Helmet>
+      <Helmet><title>Gallery – Admin – SMD Vidya Mandir</title></Helmet>
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: 12 }}>
         <h1 style={{ fontSize: '1.6rem', fontWeight: 700, color: C.navy }}>Gallery Management</h1>
@@ -84,8 +90,8 @@ export default function AdminGallery() {
           <form onSubmit={handleAdd}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 14 }}>
               <div>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: C.text, marginBottom: 6 }}>Title *</label>
-                <input required value={form.title} onChange={e => setForm({ ...form, title: e.target.value })}
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: C.text, marginBottom: 6 }}>Event Name / Title *</label>
+                <input required value={form.title} placeholder="e.g. Annual Day 2025" onChange={e => setForm({ ...form, title: e.target.value })}
                   style={{ width: '100%', padding: '10px 14px', border: `1.5px solid ${C.border}`, borderRadius: 10, fontSize: 14, outline: 'none', boxSizing: 'border-box' }} />
               </div>
               <div>
@@ -97,11 +103,10 @@ export default function AdminGallery() {
               </div>
             </div>
             <div style={{ marginBottom: 20 }}>
-              <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: C.text, marginBottom: 6 }}>Image URL *</label>
-              <input required value={form.image_url} onChange={e => setForm({ ...form, image_url: e.target.value })}
-                placeholder="https://example.com/image.jpg"
+              <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: C.text, marginBottom: 6 }}>Upload Images (Select Multiple) *</label>
+              <input required multiple type="file" accept="image/*" onChange={e => setFiles(Array.from(e.target.files))}
                 style={{ width: '100%', padding: '10px 14px', border: `1.5px solid ${C.border}`, borderRadius: 10, fontSize: 14, outline: 'none', boxSizing: 'border-box' }} />
-              <p style={{ fontSize: 11, color: C.muted, marginTop: 4 }}>Paste a public image URL (Unsplash, Google Drive, etc.)</p>
+              <p style={{ fontSize: 11, color: C.muted, marginTop: 4 }}>You can select multiple .jpg or .png files at once.</p>
             </div>
             <button type="submit" disabled={saving} style={{
               background: C.navy, color: C.white, fontWeight: 700, fontSize: 14,

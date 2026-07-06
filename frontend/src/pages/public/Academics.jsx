@@ -13,7 +13,7 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] } }
 }
 
 const CLASSES = [
@@ -53,7 +53,7 @@ export default function Academics() {
   return (
     <>
       <Helmet>
-        <title>Academics – SMD Digital Campus</title>
+        <title>Academics – SMD Vidya Mandir</title>
         <meta name="description" content="CBSE curriculum, classes I to XII, subjects, and academic structure at SMD School Sikar." />
       </Helmet>
 

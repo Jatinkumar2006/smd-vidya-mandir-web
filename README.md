@@ -1,4 +1,4 @@
-# SMD Digital Campus 🎓
+# SMD Vidya Mandir 🎓
 
 **AI-Powered School Management & Information Platform**  
 Shree Mangal Chand Didwania Vidya Mandir (CBSE), Khori Brahmanan, Raghunathgarh, Sikar, Rajasthan
@@ -26,7 +26,7 @@ Shree Mangal Chand Didwania Vidya Mandir (CBSE), Khori Brahmanan, Raghunathgarh,
 
 ```bash
 git clone <your-repo-url>
-cd smd-digital-campus
+cd smd-vidya-mandir
 ```
 
 ### 2. Database Setup (MySQL)
@@ -147,8 +147,8 @@ git checkout <commit-id> # restore to any point
 ## Project Structure
 
 ```
-smd-digital-campus/
-├── frontend/              # React + Vite app
+smd-vidya-mandir/
+├── frontend/             # React SPA (Vite) app
 │   └── src/
 │       ├── pages/
 │       │   ├── public/    # Home, About, Academics, etc.

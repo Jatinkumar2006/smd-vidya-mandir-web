@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { ArrowRight, CheckCircle } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { ArrowRight, CheckCircle, AlertTriangle, X } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import api from '@/services/api'
 import toast from 'react-hot-toast'
 
@@ -15,7 +15,7 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] } }
 }
 
 const STEPS = [
@@ -34,27 +34,25 @@ const DOCS = [
   'Caste certificate (if applicable)',
 ]
 
-// ── Component ─────────────────────────────────────────────
-
-/**
- * Admissions Page Component.
- * Handles the display of admission requirements, steps, and the online application form.
- * Contains state management for form inputs and submission handling.
- */
 export default function Admissions() {
-  // ── Form State Management ──
-  // Stores all user inputs for the admission application form.
   const [form, setForm] = useState({
     student_name: '', dob: '', gender: '', class_applying: '',
     parent_name: '', relation: 'Father', phone: '', email: '', address: '',
   })
+  
+  const [showConfirm, setShowConfirm] = useState(false)
   const [loading, setLoading]   = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
   const handle = e => setForm({ ...form, [e.target.name]: e.target.value })
 
-  const submit = async e => {
+  const handleInitialSubmit = (e) => {
     e.preventDefault()
+    setShowConfirm(true)
+  }
+
+  const confirmAndSubmit = async () => {
+    setShowConfirm(false)
     setLoading(true)
     try {
       await api.post('/admissions', form)
@@ -73,7 +71,7 @@ export default function Admissions() {
   return (
     <>
       <Helmet>
-        <title>Admissions – SMD Digital Campus</title>
+        <title>Admissions – SMD Vidya Mandir</title>
         <meta name="description" content="Apply online for admission to SMD School Sikar. CBSE classes I to XII. Admissions open 2025–26." />
       </Helmet>
 
@@ -83,7 +81,7 @@ export default function Admissions() {
           <motion.p variants={itemVariants} style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '10px' }}>2025–26</motion.p>
           <motion.h1 variants={itemVariants} style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 900, color: '#fff', marginBottom: '16px' }}>Admissions Open</motion.h1>
           <motion.p variants={itemVariants} style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '560px', lineHeight: 1.75 }}>
-            Apply online for Classes I – XII. Seats are limited — secure your child's admission today.
+            Apply online for Classes I – XII. Seats are limited - secure your child's admission today.
           </motion.p>
         </motion.div>
       </div>
@@ -123,8 +121,15 @@ export default function Admissions() {
               <div style={{ background: '#f0fdf4', border: '1.5px solid #bbf7d0', borderRadius: '16px', padding: '48px', textAlign: 'center' }}>
                 <CheckCircle size={52} color="#16a34a" style={{ margin: '0 auto 16px' }} />
                 <h3 style={{ fontFamily: "'Merriweather',serif", fontSize: '1.4rem', fontWeight: 700, color: '#15803d', marginBottom: '10px' }}>Application Submitted!</h3>
+                <p style={{ color: '#166534', fontSize: '15px', lineHeight: 1.7, marginBottom: '8px' }}>
+                  Thank you! We have received your application for <strong>{form.student_name || 'your child'}</strong>.
+                </p>
+                {form.email && (
+                  <p style={{ color: '#15803d', fontSize: '14px', fontWeight: 500, background: '#dcfce7', display: 'inline-block', padding: '6px 12px', borderRadius: '8px', marginBottom: '16px' }}>
+                    ✉️ A copy of your response has been sent to {form.email}
+                  </p>
+                )}
                 <p style={{ color: '#166534', fontSize: '15px', lineHeight: 1.7 }}>
-                  Thank you! We have received your application for <strong>{form.student_name || 'your child'}</strong>.<br />
                   Our team will contact you on <strong>{form.phone}</strong> within 2 working days.
                 </p>
                 <button onClick={() => { setSubmitted(false); setForm({ student_name:'',dob:'',gender:'',class_applying:'',parent_name:'',relation:'Father',phone:'',email:'',address:'' }) }}
@@ -133,7 +138,7 @@ export default function Admissions() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={submit}>
+              <form onSubmit={handleInitialSubmit}>
                 {/* Student Details */}
                 <div style={{ marginBottom: '28px' }}>
                   <h3 style={{ fontSize: '13px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#f59e0b', marginBottom: '16px', paddingBottom: '8px', borderBottom: '1px solid #e5e7eb' }}>Student Details</h3>
@@ -203,7 +208,7 @@ export default function Admissions() {
             )}
           </motion.div>
 
-          {/* Sidebar — Documents */}
+          {/* Sidebar - Documents */}
           <motion.div variants={itemVariants} style={{ position: 'sticky', top: '90px' }}>
             <div style={{ background: '#0a143c', borderRadius: '18px', padding: '28px', marginBottom: '20px' }}>
               <h3 style={{ color: '#f59e0b', fontWeight: 700, fontSize: '15px', marginBottom: '16px' }}>📋 Documents Required</h3>
@@ -225,6 +230,39 @@ export default function Admissions() {
           </motion.div>
         </motion.div>
       </section>
+
+      {/* Confirmation Modal */}
+      <AnimatePresence>
+        {showConfirm && (
+          <motion.div 
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          >
+            <motion.div 
+              initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }}
+              className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden"
+            >
+              <div className="p-6 border-b border-slate-100 flex gap-4 items-start bg-red-50">
+                <div className="text-red-500 bg-red-100 p-2 rounded-full shrink-0">
+                  <AlertTriangle size={24} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-800">Please Verify Your Details</h3>
+                  <p className="text-sm text-slate-600 mt-1">This submission is non-editable once confirmed. Are you sure all the provided details are correct?</p>
+                </div>
+              </div>
+              <div className="p-6 bg-slate-50 flex justify-end gap-3">
+                <button type="button" onClick={() => setShowConfirm(false)} className="px-5 py-2.5 text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-100 font-medium">
+                  Let me re-check
+                </button>
+                <button type="button" onClick={confirmAndSubmit} disabled={loading} className="px-5 py-2.5 bg-smd-blue text-white rounded-lg font-medium hover:bg-blue-800 disabled:opacity-70 flex items-center gap-2">
+                  {loading ? 'Submitting...' : 'Confirm & Submit'}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

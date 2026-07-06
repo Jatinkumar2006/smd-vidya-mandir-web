@@ -45,15 +45,16 @@ export default function Login() {
   return (
     <>
       <Helmet>
-        <title>Login – SMD Digital Campus</title>
-        <meta name="description" content="Login to SMD Digital Campus portal — admin, teacher, student, parent access." />
+        <title>Login – SMD Vidya Mandir</title>
+        <meta name="description" content="Login to SMD Vidya Mandir portal - admin, teacher, student, parent access." />
       </Helmet>
 
       <div style={{
         minHeight: '100vh',
         background: 'linear-gradient(135deg, #0a143c 0%, #1a3aad 50%, #0a143c 100%)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '40px 20px', position: 'relative', overflow: 'hidden',
+        paddingTop: '120px', paddingBottom: '40px', paddingLeft: '20px', paddingRight: '20px',
+        position: 'relative', overflow: 'hidden',
       }}>
         {/* Background decorations */}
         <div style={{ position: 'absolute', top: '-80px', right: '-80px', width: 400, height: 400, borderRadius: '50%', background: 'rgba(245,158,11,0.08)' }} />
@@ -71,7 +72,7 @@ export default function Login() {
               }}>
                 <GraduationCap size={34} color="#f59e0b" />
               </div>
-              <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0a143c' }}>SMD Digital Campus</h1>
+              <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0a143c' }}>SMD Vidya Mandir</h1>
               <p style={{ fontSize: 13, color: '#6b7280', marginTop: 4 }}>Sign in to access your portal</p>
             </div>
 
@@ -155,7 +156,7 @@ export default function Login() {
           </div>
 
           <p style={{ textAlign: 'center', marginTop: 20, fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>
-            © 2024 SMD Digital Campus · Sikar, Rajasthan
+            © 2024 SMD Vidya Mandir · Sikar, Rajasthan
           </p>
         </div>
       </div>

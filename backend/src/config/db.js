@@ -1,16 +1,18 @@
-import mysql from 'mysql2/promise'
+import pg from 'pg'
 import dotenv from 'dotenv'
 dotenv.config()
 
-const pool = mysql.createPool({
-  host:     process.env.DB_HOST     || 'localhost',
-  port:     parseInt(process.env.DB_PORT || '3306'),
-  user:     process.env.DB_USER     || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME     || 'smd_campus',
-  waitForConnections: true,
-  connectionLimit:    10,
-  queueLimit:         0,
+const pool = new pg.Pool({
+  connectionString: process.env.DATABASE_URL,
+})
+
+// Add a test query to verify connection on startup
+pool.query('SELECT NOW()', (err, res) => {
+  if (err) {
+    console.error('❌ Failed to connect to PostgreSQL database:', err.stack)
+  } else {
+    console.log('✅ Connected to PostgreSQL database successfully!')
+  }
 })
 
 export default pool

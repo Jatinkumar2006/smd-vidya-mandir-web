@@ -36,7 +36,7 @@ export default function StudentResults() {
 
   return (
     <>
-      <Helmet><title>My Results – SMD Digital Campus</title></Helmet>
+      <Helmet><title>My Results – SMD Vidya Mandir</title></Helmet>
 
       <h1 style={{ fontSize: '1.6rem', fontWeight: 700, color: C.navy, marginBottom: '1.5rem' }}>My Results</h1>
 

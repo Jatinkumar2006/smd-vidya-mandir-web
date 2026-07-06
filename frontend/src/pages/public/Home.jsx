@@ -42,19 +42,19 @@ const FEATURES = [
 ]
 
 const NOTICES = [
-  { day: '25', month: 'Jun', tag: '📢 Announcement', title: 'Admissions Open for Session 2025–26 — All Classes'      },
-  { day: '20', month: 'Jun', tag: '📅 Holiday',      title: 'Summer break revised — School resumes July 1'           },
+  { day: '25', month: 'Jun', tag: '📢 Announcement', title: 'Admissions Open for Session 2025–26 - All Classes'      },
+  { day: '20', month: 'Jun', tag: '📅 Holiday',      title: 'Summer break revised - School resumes July 1'           },
   { day: '15', month: 'Jun', tag: '📝 Exam',         title: 'Pre-board timetable released for Class X & XII'         },
-  { day: '10', month: 'Jun', tag: '🎉 Event',        title: 'Annual Sports Day — Highlights and results published'    },
+  { day: '10', month: 'Jun', tag: '🎉 Event',        title: 'Annual Sports Day - Highlights and results published'    },
 ]
 
 const QUICK_LINKS = [
   { emoji: '📋', label: 'Admission Form',       to: '/admissions' },
-  { emoji: '📄', label: 'Fee Structure',        to: '/contact'    },
-  { emoji: '📅', label: 'Academic Calendar',    to: '/academics'  },
+  { emoji: '📄', label: 'Fee Structure',        to: '/doc/FEE-CHART-2025-26.pdf'  },
+  { emoji: '📅', label: 'Academic Calendar',    to: '/doc/Academic-Calendar.pdf'  },
   { emoji: '🎓', label: 'Student Login',        to: '/login'      },
-  { emoji: '👨‍👩‍👧', label: 'Parent Login',  to: '/login'      },
-  { emoji: '📊', label: 'Mandatory Disclosure', to: '/mpd'        },
+  { emoji: '👨‍🏫', label: 'Teacher Login',      to: '/login'      },
+  { emoji: '▶️', label: 'YouTube Channel',      to: 'https://www.youtube.com/@SMDsikar' },
 ]
 
 // ── Animation Variants ────────────────────────────────────
@@ -63,13 +63,13 @@ const heroContainerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.25, delayChildren: 0.15 }
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 }
   }
 }
 
 const heroItemVariants = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.90, ease: [0.25, 0.1, 0.25, 1] } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.40, ease: [0.25, 0.1, 0.25, 1] } }
 }
 
 // ── Component ─────────────────────────────────────────────
@@ -121,20 +121,8 @@ export default function Home() {
 
   return (
     <>
-      <style>
-        {`
-          @keyframes goldPulse {
-            0% { text-shadow: 0 0 5px rgba(245,158,11,0.2); }
-            50% { text-shadow: 0 0 15px rgba(245,158,11,0.8), 0 0 25px rgba(245,158,11,0.4); }
-            100% { text-shadow: 0 0 5px rgba(245,158,11,0.2); }
-          }
-          .glowing-number {
-            animation: goldPulse 2.5s infinite ease-in-out;
-          }
-        `}
-      </style>
       <Helmet>
-        <title>SMD Digital Campus – Best CBSE School in Sikar, Rajasthan</title>
+        <title>SMD Vidya Mandir – Best CBSE School in Sikar, Rajasthan</title>
         <meta
           name="description"
           content="Shree Mangal Chand Didwania Vidya Mandir – CBSE affiliated school in Raghunathgarh, Sikar. Admissions open for 2025–26."
@@ -191,7 +179,7 @@ export default function Home() {
 
           {/* Motto */}
           <motion.p variants={heroItemVariants} className="font-serif text-xs md:text-[13.5px] italic text-amber-500/85 mb-4 md:mb-5 tracking-[0.03em]">
-            "तमसो मा ज्योतिर्गमय" — Lead us from darkness to light
+            "तमसो मा ज्योतिर्गमय" - Lead us from darkness to light
           </motion.p>
 
           {/* Subtitle */}
@@ -245,7 +233,7 @@ export default function Home() {
               onMouseEnter={e => e.currentTarget.style.background = 'rgba(20,35,90,0.95)'}
               onMouseLeave={e => e.currentTarget.style.background = 'rgba(10,20,60,0.95)'}
             >
-              <div className="glowing-number text-lg md:text-[26px] font-extrabold text-amber-500 leading-none">
+              <div className="text-lg md:text-[26px] font-extrabold text-amber-500 leading-none">
                 {end ? (
                   <CountUp end={end} suffix={suffix} enableScrollSpy scrollSpyOnce duration={4.5} scrollSpyDelay={500} />
                 ) : (
@@ -311,7 +299,7 @@ export default function Home() {
             <motion.div variants={heroItemVariants} style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '15px 18px', background: '#fff8ed', borderLeft: '4px solid #f59e0b', borderRadius: '0 10px 10px 0', margin: '22px 0' }}>
               <span style={{ fontSize: '22px', flexShrink: 0 }}>🪔</span>
               <span style={{ fontFamily: "'Merriweather', serif", fontSize: '14.5px', fontStyle: 'italic', color: '#0a143c', fontWeight: 700 }}>
-                "तमसो मा ज्योतिर्गमय" — Lead us from darkness to light
+                "तमसो मा ज्योतिर्गमय" - Lead us from darkness to light
               </span>
             </motion.div>
             <motion.div variants={heroItemVariants}>
@@ -350,7 +338,7 @@ export default function Home() {
               Everything a Student Needs to Thrive
             </motion.h2>
             <motion.p variants={heroItemVariants} style={{ color: '#6b7280', fontSize: '15.5px', lineHeight: 1.8, maxWidth: '560px', margin: '0 auto' }}>
-              From digital learning tools to sports grounds — an environment where learning is joyful and growth is holistic.
+              From digital learning tools to sports grounds - an environment where learning is joyful and growth is holistic.
             </motion.p>
           </motion.div>
 
@@ -416,10 +404,14 @@ export default function Home() {
               <h3 style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '14px' }}>
                 Quick Links
               </h3>
-              {QUICK_LINKS.map(({ emoji, label, to }) => (
-                <Link
+              {QUICK_LINKS.map(({ emoji, label, to }) => {
+                const isExternal = to.endsWith('.pdf') || to.startsWith('http');
+                const Tag = isExternal ? 'a' : Link;
+                const linkProps = isExternal ? { href: to, target: '_blank', rel: 'noreferrer' } : { to };
+                return (
+                <Tag
                   key={label}
-                  to={to}
+                  {...linkProps}
                   style={{
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                     color: 'rgba(255,255,255,0.78)', textDecoration: 'none',
@@ -435,8 +427,9 @@ export default function Home() {
                     <span>{label}</span>
                   </span>
                   <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: '12px', flexShrink: 0 }}>→</span>
-                </Link>
-              ))}
+                </Tag>
+                )
+              })}
             </div>
           </div>
         </div>
@@ -444,7 +437,6 @@ export default function Home() {
 
       {/* ── CTA BANNER ───────────────────────────────────── */}
       <section className="responsive-section" style={{ background: 'linear-gradient(130deg, #0a143c 0%, #1a3aad 100%)', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: '-60%', right: '-5%', width: '520px', height: '520px', background: 'rgba(245,158,11,0.07)', borderRadius: '50%', pointerEvents: 'none' }} />
         <div style={{ position: 'relative', zIndex: 1, maxWidth: '640px', margin: '0 auto' }}>
           <h2 style={{ fontFamily: "'Merriweather', serif", fontSize: 'clamp(1.8rem,3vw,2.2rem)', color: '#fff', marginBottom: '14px', fontWeight: 700 }}>
             Admissions Open for 2025–26

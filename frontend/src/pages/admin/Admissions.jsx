@@ -53,7 +53,7 @@ export default function AdminAdmissions() {
 
   return (
     <>
-      <Helmet><title>Admissions – Admin – SMD Digital Campus</title></Helmet>
+      <Helmet><title>Admissions – Admin – SMD Vidya Mandir</title></Helmet>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: 12 }}>
         <h1 style={{ fontSize: '1.6rem', fontWeight: 700, color: C.navy }}>Admission Applications</h1>
@@ -120,14 +120,14 @@ export default function AdminAdmissions() {
             </div>
             {[
               ['Student Name', selected.student_name],
-              ['Date of Birth', selected.dob ? new Date(selected.dob).toLocaleDateString('en-IN') : '—'],
-              ['Gender', selected.gender || '—'],
+              ['Date of Birth', selected.dob ? new Date(selected.dob).toLocaleDateString('en-IN') : '-'],
+              ['Gender', selected.gender || '-'],
               ['Class Applying', `Class ${selected.class_applying}`],
               ['Parent Name', selected.parent_name],
-              ['Relation', selected.relation || '—'],
+              ['Relation', selected.relation || '-'],
               ['Phone', selected.phone],
-              ['Email', selected.email || '—'],
-              ['Address', selected.address || '—'],
+              ['Email', selected.email || '-'],
+              ['Address', selected.address || '-'],
               ['Applied On', new Date(selected.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })],
             ].map(([l, v]) => (
               <div key={l} style={{ marginBottom: 10 }}>

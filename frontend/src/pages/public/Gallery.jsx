@@ -54,7 +54,7 @@ export default function Gallery() {
   return (
     <>
       <Helmet>
-        <title>Gallery – SMD Digital Campus</title>
+        <title>Gallery – SMD Vidya Mandir</title>
         <meta name="description" content="Photo gallery of SMD School events, sports day, cultural programs and campus life at Raghunathgarh, Sikar." />
       </Helmet>
 
@@ -64,13 +64,13 @@ export default function Gallery() {
           <motion.p variants={itemVariants} style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '10px' }}>Memories</motion.p>
           <motion.h1 variants={itemVariants} style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 900, color: '#fff', marginBottom: '16px' }}>Photo Gallery</motion.h1>
           <motion.p variants={itemVariants} style={{ color: 'rgba(255,255,255,0.75)', fontSize: '16px', maxWidth: '560px', lineHeight: 1.75 }}>
-            Glimpses of life at SMD School — events, sports, cultural programs and everyday campus moments.
+            Glimpses of life at SMD School - events, sports, cultural programs and everyday campus moments.
           </motion.p>
         </motion.div>
       </div>
 
       {/* Filters */}
-      <section className="responsive-section-top" style={{ background: '#f7f9ff' }}>
+      <section className="responsive-section-top" style={{ background: '#f7f9ff', paddingBottom: '40px' }}>
         <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
             {CATEGORIES.map(cat => (

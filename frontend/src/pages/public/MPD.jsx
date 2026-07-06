@@ -1,6 +1,8 @@
+import { useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { FileText, Download, ExternalLink } from 'lucide-react'
+import { FileText, ExternalLink } from 'lucide-react'
 import { motion } from 'framer-motion'
+import api from '@/services/api'
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -12,73 +14,71 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] } }
 }
 
-const MPD_DOCS = [
+const INITIAL_MPD_DOCS = [
   {
-    category: 'School Information',
+    category: 'General Documents',
     items: [
-      { title: 'CBSE Affiliation Certificate',     file: null, note: 'Upload to /uploads/mpd/' },
-      { title: 'Trust / Society Registration',     file: null, note: 'Upload to /uploads/mpd/' },
-      { title: 'NOC from State Government',        file: null, note: 'Upload to /uploads/mpd/' },
-      { title: 'Recognition Certificate',          file: null, note: 'Upload to /uploads/mpd/' },
+      { title: 'Academic Calendar', file: null },
+      { title: 'Building Safety', file: null },
+      { title: 'CBSE - Affiliation', file: '/doc/Cbse-Affiliation.pdf' },
+      { title: 'Fee Structure', file: null },
+      { title: 'Land Certificate', file: '/doc/Land-Certificate.pdf' },
     ],
   },
   {
-    category: 'Infrastructure & Academics',
+    category: 'Certifications & Reports',
     items: [
-      { title: 'Building Safety Certificate',      file: null, note: 'Upload to /uploads/mpd/' },
-      { title: 'Fire Safety Certificate',          file: null, note: 'Upload to /uploads/mpd/' },
-      { title: 'Drinking Water Certificate',       file: null, note: 'Upload to /uploads/mpd/' },
-      { title: 'Land Certificate',                 file: null, note: 'Upload to /uploads/mpd/' },
-    ],
-  },
-  {
-    category: 'Fee & Results',
-    items: [
-      { title: 'Fee Structure 2025–26',            file: null, note: 'Upload to /uploads/mpd/' },
-      { title: 'Annual Academic Calendar',         file: null, note: 'Upload to /uploads/mpd/' },
-      { title: 'Board Exam Result 2024 (Class X)', file: null, note: 'Upload to /uploads/mpd/' },
-      { title: 'Board Exam Result 2024 (Class XII)',file: null, note: 'Upload to /uploads/mpd/' },
-    ],
-  },
-  {
-    category: 'Staff Information',
-    items: [
-      { title: 'List of Teaching Staff',           file: null, note: 'Upload to /uploads/mpd/' },
-      { title: 'Qualifications of Staff',          file: null, note: 'Upload to /uploads/mpd/' },
-      { title: 'List of Non-Teaching Staff',       file: null, note: 'Upload to /uploads/mpd/' },
+      { title: 'NOC', file: '/doc/NOC.pdf' },
+      { title: 'Recognition', file: '/doc/Recognition.pdf' },
+      { title: 'Self Certificate', file: '/doc/Self-Certificate.pdf' },
+      { title: 'Society Registration', file: '/doc/Society-Registration.pdf' },
+      { title: 'Water-Test-Report', file: '/doc/Water-Test-Report.pdf' },
     ],
   },
 ]
 
 const INFO_TABLE = [
-  { label: 'School Name',         value: 'Shree Mangal Chand Didwania Vidya Mandir' },
-  { label: 'Affiliation Board',   value: 'Central Board of Secondary Education (CBSE)' },
-  { label: 'Affiliation Number',  value: 'To be updated' },
-  { label: 'School Number',       value: 'To be updated' },
-  { label: 'Year of Establishment', value: '2009' },
-  { label: 'Principal Name',      value: 'To be updated' },
-  { label: 'Contact',             value: '+91-9001995272' },
-  { label: 'Email',               value: 'smdvidyamandir@gmail.com' },
-  { label: 'Address',             value: 'Khori Brahmanan, Raghunathgarh, Sikar, Rajasthan – 332001' },
-  { label: 'Classes Offered',     value: 'Class I to XII' },
-  { label: 'Medium of Instruction', value: 'Hindi & English' },
-  { label: 'Type of School',      value: 'Co-Educational' },
+  { label: 'Name', value: 'Shri Mangalchand Didwaniya Vidya Mandir' },
+  { label: 'Affiliate ID', value: '1730539' },
+  { label: 'Address', value: 'V.p.o. Khori Brahamnan, Raghunathgarh, Distt. Sikar (raj.)' },
+  { label: 'PIN Code', value: '332001' },
+  { label: 'STD Code', value: '1572' },
+  { label: 'Office Phone', value: '251118' },
+  { label: 'Residence Phone', value: '22241840' },
+  { label: 'E-mail', value: 'SMDVIDYAMANDIR@GMAIL.COM' },
+  { label: 'Foundation Year', value: '2002' },
+  { label: 'School Status', value: 'Senior Secondary' },
+  { label: 'Managing Trust/Society/Committee', value: 'Shri Khandelwal Charity Trust' },
 ]
 
-// ── Component ─────────────────────────────────────────────
-
-/**
- * Mandatory Public Disclosure (MPD) Page Component.
- * Displays CBSE compliance information and links to public disclosure documents.
- */
 export default function MPD() {
+  const [docs, setDocs] = useState(INITIAL_MPD_DOCS)
+
+  useEffect(() => {
+    // Fetch dynamic documents from DB and merge them into the static layout
+    api.get('/documents').then(res => {
+      const dbDocs = res.data
+      setDocs(prevDocs => 
+        prevDocs.map(category => ({
+          ...category,
+          items: category.items.map(item => {
+            // If the admin uploaded a document with the exact same title, override the file URL
+            const matchedDbDoc = dbDocs.find(d => d.title.toLowerCase() === item.title.toLowerCase())
+            if (matchedDbDoc) return { ...item, file: matchedDbDoc.file_url }
+            return item
+          })
+        }))
+      )
+    }).catch(err => console.error("Failed to load documents", err))
+  }, [])
+
   return (
     <>
       <Helmet>
-        <title>Mandatory Public Disclosure – SMD Digital Campus</title>
+        <title>Mandatory Public Disclosure – SMD Vidya Mandir</title>
         <meta name="description" content="CBSE Mandatory Public Disclosure documents for SMD School Sikar, Rajasthan." />
       </Helmet>
 
@@ -124,7 +124,7 @@ export default function MPD() {
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={containerVariants} style={{ maxWidth: '1160px', margin: '0 auto' }}>
           <motion.h2 variants={itemVariants} style={{ fontFamily: "'Merriweather',serif", fontSize: '1.5rem', fontWeight: 700, color: '#0a143c', marginBottom: '32px' }}>Disclosure Documents</motion.h2>
           <div className="responsive-grid-2">
-            {MPD_DOCS.map(({ category, items }) => (
+            {docs.map(({ category, items }) => (
               <motion.div variants={itemVariants} key={category} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '16px', overflow: 'hidden' }}>
                 <div style={{ background: '#0a143c', padding: '14px 20px' }}>
                   <h3 style={{ color: '#f59e0b', fontWeight: 700, fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{category}</h3>
@@ -136,9 +136,9 @@ export default function MPD() {
                       <span style={{ fontSize: '13.5px', color: '#374151', fontWeight: 500 }}>{title}</span>
                     </div>
                     {file ? (
-                      <a href={file} target="_blank" rel="noreferrer" download
+                      <a href={file} target="_blank" rel="noreferrer"
                         style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#eff6ff', color: '#1d4ed8', padding: '5px 12px', borderRadius: '6px', textDecoration: 'none', fontSize: '12px', fontWeight: 600, whiteSpace: 'nowrap', flexShrink: 0 }}>
-                        <Download size={13} /> Download
+                        <ExternalLink size={13} /> View
                       </a>
                     ) : (
                       <span style={{ fontSize: '11px', color: '#d1d5db', fontStyle: 'italic', flexShrink: 0 }}>Upload pending</span>
@@ -149,16 +149,6 @@ export default function MPD() {
             ))}
           </div>
 
-          {/* Upload note for admin */}
-          <motion.div variants={itemVariants} style={{ marginTop: '32px', background: '#f0fdf4', border: '1.5px solid #bbf7d0', borderRadius: '14px', padding: '20px 24px', display: 'flex', gap: '12px' }}>
-            <span style={{ fontSize: '20px', flexShrink: 0 }}>📁</span>
-            <div>
-              <p style={{ fontWeight: 700, fontSize: '14px', color: '#15803d', marginBottom: '4px' }}>For Admin</p>
-              <p style={{ fontSize: '13px', color: '#166534', lineHeight: 1.7 }}>
-                Upload PDF files to <code style={{ background: '#dcfce7', padding: '1px 6px', borderRadius: '4px' }}>backend/uploads/mpd/</code> and update the <code style={{ background: '#dcfce7', padding: '1px 6px', borderRadius: '4px' }}>file</code> field in the MPD_DOCS array with the correct path, e.g. <code style={{ background: '#dcfce7', padding: '1px 6px', borderRadius: '4px' }}>/uploads/mpd/affiliation.pdf</code>
-              </p>
-            </div>
-          </motion.div>
         </motion.div>
       </section>
     </>

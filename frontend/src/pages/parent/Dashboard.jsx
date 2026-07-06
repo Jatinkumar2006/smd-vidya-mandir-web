@@ -14,7 +14,7 @@ export default function ParentDashboard() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Parent dashboard shows child data — for now show notices + upcoming features
+    // Parent dashboard shows child data - for now show notices + upcoming features
     Promise.all([
       api.get('/notices'),
     ]).then(([n]) => {
@@ -24,7 +24,7 @@ export default function ParentDashboard() {
 
   return (
     <>
-      <Helmet><title>Parent Dashboard – SMD Digital Campus</title></Helmet>
+      <Helmet><title>Parent Dashboard – SMD Vidya Mandir</title></Helmet>
 
       <div style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '1.6rem', fontWeight: 700, color: C.navy }}>Welcome, {user?.name}! 👨‍👩‍👧</h1>

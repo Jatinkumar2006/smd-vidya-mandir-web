@@ -19,7 +19,7 @@ export default function TeacherDashboard() {
 
   return (
     <>
-      <Helmet><title>Teacher Dashboard – SMD Digital Campus</title></Helmet>
+      <Helmet><title>Teacher Dashboard – SMD Vidya Mandir</title></Helmet>
 
       <div style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '1.6rem', fontWeight: 700, color: C.navy }}>Welcome back, {user?.name} 👋</h1>

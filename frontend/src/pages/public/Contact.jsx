@@ -15,7 +15,7 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] } }
 }
 
 /**
@@ -47,8 +47,8 @@ export default function Contact() {
   return (
     <>
       <Helmet>
-        <title>Contact Us – SMD Digital Campus</title>
-        <meta name="description" content="Contact SMD School Sikar — phone, email, address, and online inquiry form." />
+        <title>Contact Us – SMD Vidya Mandir</title>
+        <meta name="description" content="Contact SMD School Sikar - phone, email, address, and online inquiry form." />
       </Helmet>
 
       {/* Header */}
@@ -65,7 +65,7 @@ export default function Contact() {
       <section className="responsive-section">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={containerVariants} className="responsive-contact-grid" style={{ maxWidth: '1160px', margin: '0 auto' }}>
 
-          {/* Left — Contact Info */}
+          {/* Left - Contact Info */}
           <motion.div variants={itemVariants}>
             <h2 style={{ fontFamily: "'Merriweather',serif", fontSize: '1.6rem', fontWeight: 700, color: '#0a143c', marginBottom: '28px' }}>School Information</h2>
 
@@ -110,7 +110,7 @@ export default function Contact() {
             </div>
           </motion.div>
 
-          {/* Right — Inquiry Form */}
+          {/* Right - Inquiry Form */}
           <motion.div variants={itemVariants} style={{ background: '#f7f9ff', borderRadius: '20px', padding: '40px', border: '1px solid #e5e7eb' }}>
             <h2 style={{ fontFamily: "'Merriweather',serif", fontSize: '1.4rem', fontWeight: 700, color: '#0a143c', marginBottom: '6px' }}>Send us a Message</h2>
             <p style={{ color: '#6b7280', fontSize: '13.5px', marginBottom: '28px' }}>We typically respond within 24 hours on working days.</p>
@@ -126,8 +126,8 @@ export default function Contact() {
                   />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#374151', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Phone Number</label>
-                  <input name="phone" value={form.phone} onChange={handle} placeholder="+91 9876543210" type="tel"
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#374151', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Phone Number *</label>
+                  <input name="phone" value={form.phone} onChange={handle} required placeholder="+91 9876543210" type="tel"
                     style={{ width: '100%', padding: '11px 14px', border: '1.5px solid #e5e7eb', borderRadius: '10px', fontSize: '14px', outline: 'none', background: '#fff', boxSizing: 'border-box' }}
                     onFocus={e => e.target.style.borderColor = '#0a143c'}
                     onBlur={e => e.target.style.borderColor = '#e5e7eb'}
@@ -180,15 +180,17 @@ export default function Contact() {
       {/* Map placeholder */}
       <section className="responsive-section-bottom">
         <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
-          <div style={{ borderRadius: '18px', overflow: 'hidden', border: '1px solid #e5e7eb', height: '320px', background: '#f7f9ff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ textAlign: 'center' }}>
-              <MapPin size={40} color="#d1d5db" style={{ margin: '0 auto 12px' }} />
-              <p style={{ color: '#9ca3af', fontSize: '14px', marginBottom: '12px' }}>Khori Brahmanan, Raghunathgarh, Sikar, Rajasthan</p>
-              <a href="https://maps.google.com/?q=Raghunathgarh+Sikar+Rajasthan" target="_blank" rel="noreferrer"
-                style={{ background: '#0a143c', color: '#fff', padding: '10px 20px', borderRadius: '8px', textDecoration: 'none', fontSize: '13px', fontWeight: 600 }}>
-                Open in Google Maps →
-              </a>
-            </div>
+          <div style={{ borderRadius: '18px', overflow: 'hidden', border: '1px solid #e5e7eb', height: '400px', background: '#f7f9ff', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+            <iframe 
+              src="https://maps.google.com/maps?q=Shri%20Mangalchand%20Didwaniya%20Vidya%20Mandir,%20Khori%20Brahamnan,%20Sikar&t=&z=13&ie=UTF8&iwloc=&output=embed" 
+              width="100%" 
+              height="100%" 
+              style={{ border: 0, position: 'absolute', top: 0, left: 0 }} 
+              allowFullScreen="" 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Google Map"
+            />
           </div>
         </div>
       </section>

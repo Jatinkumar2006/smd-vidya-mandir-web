@@ -78,7 +78,7 @@ export default function TeacherMarks() {
 
   return (
     <>
-      <Helmet><title>Enter Marks – Teacher – SMD Digital Campus</title></Helmet>
+      <Helmet><title>Enter Marks – Teacher – SMD Vidya Mandir</title></Helmet>
 
       <h1 style={{ fontSize: '1.6rem', fontWeight: 700, color: C.navy, marginBottom: '1.5rem' }}>Enter Marks</h1>
 
@@ -126,7 +126,7 @@ export default function TeacherMarks() {
           <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 16, overflow: 'hidden', marginBottom: '1rem' }}>
             <div style={{ padding: '16px 20px', borderBottom: `1px solid ${C.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h2 style={{ fontWeight: 700, color: C.navy, fontSize: '0.95rem' }}>
-                Class {filter.class} — {filter.subject} — {filter.exam_type}
+                Class {filter.class} - {filter.subject} - {filter.exam_type}
               </h2>
               <span style={{ fontSize: 13, color: C.muted }}>{students.length} students</span>
             </div>
@@ -159,7 +159,7 @@ export default function TeacherMarks() {
                           style={{ width: 80, padding: '6px 10px', border: `1.5px solid ${C.border}`, borderRadius: 8, fontSize: 14, outline: 'none', textAlign: 'center' }} />
                       </td>
                       <td style={{ padding: '10px 16px' }}>
-                        {pct !== null ? <span style={{ fontWeight: 700, color: pctColor }}>{pct}%</span> : <span style={{ color: C.muted }}>—</span>}
+                        {pct !== null ? <span style={{ fontWeight: 700, color: pctColor }}>{pct}%</span> : <span style={{ color: C.muted }}>-</span>}
                       </td>
                       <td style={{ padding: '10px 16px' }}>
                         <button onClick={() => generateRemark(s)} style={{

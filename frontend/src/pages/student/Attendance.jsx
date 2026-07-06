@@ -31,7 +31,7 @@ export default function StudentAttendance() {
 
   return (
     <>
-      <Helmet><title>My Attendance – SMD Digital Campus</title></Helmet>
+      <Helmet><title>My Attendance – SMD Vidya Mandir</title></Helmet>
 
       <h1 style={{ fontSize: '1.6rem', fontWeight: 700, color: C.navy, marginBottom: '1.5rem' }}>My Attendance</h1>
 
@@ -90,7 +90,7 @@ export default function StudentAttendance() {
                   {recs.map(r => {
                     const d = new Date(r.date)
                     return (
-                      <div key={r.date} title={`${r.date} — ${r.status}`} style={{
+                      <div key={r.date} title={`${r.date} - ${r.status}`} style={{
                         width: 48, height: 48, borderRadius: 10,
                         background: S_BG[r.status], border: `1.5px solid ${S_COLOR[r.status]}33`,
                         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',

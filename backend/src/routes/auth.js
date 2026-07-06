@@ -10,7 +10,7 @@ const router = express.Router()
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body
-    const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email])
+    const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [email])
     const user = rows[0]
 
     if (!user || !(await bcrypt.compare(password, user.password_hash)))
@@ -31,8 +31,8 @@ router.post('/login', async (req, res) => {
 // GET /api/auth/me — returns current user info
 router.get('/me', protect, async (req, res) => {
   try {
-    const [rows] = await pool.query(
-      'SELECT id, name, email, role, phone, created_at FROM users WHERE id = ?',
+    const { rows } = await pool.query(
+      'SELECT id, name, email, role, phone, created_at FROM users WHERE id = $1',
       [req.user.id]
     )
     if (!rows[0]) return res.status(404).json({ message: 'User not found' })
@@ -50,13 +50,13 @@ router.post('/register', protect, async (req, res) => {
       return res.status(403).json({ message: 'Admin only' })
 
     const hash = await bcrypt.hash(password, 10)
-    const [result] = await pool.query(
-      'INSERT INTO users (name, email, password_hash, role, phone) VALUES (?, ?, ?, ?, ?)',
+    const { rows } = await pool.query(
+      'INSERT INTO users (name, email, password_hash, role, phone) VALUES ($1, $2, $3, $4, $5) RETURNING id',
       [name, email, hash, role, phone || null]
     )
-    res.status(201).json({ message: 'User created', id: result.insertId })
+    res.status(201).json({ message: 'User created', id: rows[0].id })
   } catch (err) {
-    if (err.code === 'ER_DUP_ENTRY')
+    if (err.code === '23505') // Postgres unique_violation
       return res.status(400).json({ message: 'Email already exists' })
     res.status(500).json({ message: 'Server error' })
   }

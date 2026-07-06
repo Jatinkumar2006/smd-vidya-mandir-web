@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { LayoutDashboard, Users, BookOpen, Calendar, Bell, Image, FileText, BarChart2, GraduationCap } from 'lucide-react'
+import { LayoutDashboard, Users, BookOpen, Calendar, Bell, Image, FileText, BarChart2, GraduationCap, Briefcase, Folder } from 'lucide-react'
 
 const MENUS = {
   admin:   [
@@ -8,6 +8,8 @@ const MENUS = {
     { to: '/admin/admissions',  icon: FileText,        label: 'Admissions' },
     { to: '/admin/notices',     icon: Bell,            label: 'Notices' },
     { to: '/admin/gallery',     icon: Image,           label: 'Gallery' },
+    { to: '/admin/careers',     icon: Briefcase,       label: 'Careers' },
+    { to: '/admin/documents',   icon: Folder,          label: 'Documents' },
   ],
   teacher: [
     { to: '/teacher',            icon: LayoutDashboard, label: 'Dashboard' },

@@ -1,50 +1,106 @@
 import { Link } from 'react-router-dom'
-import { Phone, Mail, MapPin, Youtube, Facebook } from 'lucide-react'
+import { Phone, Mail, MapPin, Youtube, Facebook, Instagram, ArrowRight } from 'lucide-react'
+import logo from '../../assets/images/logo.png'
 
-/**
- * Footer Component.
- * Renders the bottom section of the public website containing contact info,
- * quick links, and social media icons.
- */
 export default function Footer() {
   return (
-    <footer className="bg-smd-blue text-white">
-      <div className="container-max section-padding py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {/* About */}
-          <div>
-            <h3 className="font-bold text-lg mb-4 text-smd-gold">SMD Digital Campus</h3>
-            <p className="text-white/70 text-sm leading-relaxed">
-              Shree Mangal Chand Didwania Vidya Mandir<br />
-              CBSE Affiliated School<br />
-              Khori Brahmanan, Raghunathgarh, Sikar, Rajasthan
+    <footer className="bg-[#0a143c] text-slate-300 pt-12 pb-8 border-t border-white/5">
+      <div className="container-max section-padding !pt-0 !pb-0">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8 mb-16 pt-12">
+          
+          {/* Brand Column */}
+          <div className="md:col-span-12 lg:col-span-5 space-y-6">
+            <div className="flex items-center gap-3">
+              <img src={logo} alt="SMD Logo" className="w-12 h-12 object-contain" />
+              <div>
+                <h3 className="text-2xl font-bold text-white tracking-tight">SMD Vidya Mandir</h3>
+                <p className="text-smd-gold text-xs font-bold tracking-widest uppercase mt-0.5">CBSE Affiliated</p>
+              </div>
+            </div>
+            <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
+              Empowering students through holistic education, cutting-edge facilities, and a deep respect for core values since our foundation.
             </p>
+            <div className="flex items-center gap-3 pt-2">
+              <a href="https://www.youtube.com/@SMDsikar" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:bg-[#ff0000] hover:text-white hover:border-transparent transition-all duration-300">
+                <Youtube size={18} />
+              </a>
+              <a href="https://www.facebook.com/SMDVidyaMandirCBSE/" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:bg-[#1877F2] hover:text-white hover:border-transparent transition-all duration-300">
+                <Facebook size={18} />
+              </a>
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:bg-[#E1306C] hover:text-white hover:border-transparent transition-all duration-300">
+                <Instagram size={18} />
+              </a>
+            </div>
           </div>
-          {/* Quick Links */}
-          <div>
-            <h3 className="font-bold text-lg mb-4 text-smd-gold">Quick Links</h3>
-            <ul className="space-y-2 text-sm text-white/70">
-              {['About', 'Academics', 'Admissions', 'Gallery', 'MPD', 'Contact'].map(l => (
-                <li key={l}><Link to={`/${l.toLowerCase()}`} className="hover:text-white transition-colors">{l}</Link></li>
+
+          {/* Quick Links Column */}
+          <div className="md:col-span-6 lg:col-span-3">
+            <h4 className="text-white font-bold mb-6 uppercase tracking-wider text-sm">Explore</h4>
+            <ul className="space-y-3">
+              {[
+                { label: 'About Our School', to: '/about' },
+                { label: 'Academic Programs', to: '/academics' },
+                { label: 'Admissions Open', to: '/admissions' },
+                { label: 'Careers & Vacancies', to: '/careers' },
+                { label: 'Campus Gallery', to: '/gallery' },
+                { label: 'Contact Us', to: '/contact' }
+              ].map(link => (
+                <li key={link.label}>
+                  <Link to={link.to} className="group flex items-center text-slate-400 hover:text-smd-gold transition-colors text-sm font-medium">
+                    <span className="w-0 overflow-hidden opacity-0 group-hover:w-5 group-hover:opacity-100 transition-all duration-300 ease-out text-smd-gold">
+                      <ArrowRight size={14} />
+                    </span>
+                    {link.label}
+                  </Link>
+                </li>
               ))}
             </ul>
           </div>
-          {/* Contact */}
-          <div>
-            <h3 className="font-bold text-lg mb-4 text-smd-gold">Contact</h3>
-            <div className="space-y-3 text-sm text-white/70">
-              <div className="flex items-center gap-2"><Phone size={16} /><span>+91-9001995272</span></div>
-              <div className="flex items-center gap-2"><Mail size={16} /><span>smdvidyamandir@gmail.com</span></div>
-              <div className="flex items-start gap-2"><MapPin size={16} className="mt-0.5 shrink-0" /><span>Khori Brahmanan, Raghunathgarh, Sikar, Rajasthan</span></div>
-              <div className="flex gap-4 mt-4">
-                <a href="https://www.youtube.com/@SMDsikar"  target="_blank" rel="noreferrer" className="hover:text-smd-gold transition-colors"><Youtube size={20} /></a>
-                <a href="https://www.facebook.com/SMDVidyaMandirCBSE/" target="_blank" rel="noreferrer" className="hover:text-smd-gold transition-colors"><Facebook size={20} /></a>
-              </div>
-            </div>
+
+          {/* Contact Column */}
+          <div className="md:col-span-6 lg:col-span-4">
+            <h4 className="text-white font-bold mb-6 uppercase tracking-wider text-sm">Get in Touch</h4>
+            <ul className="space-y-5">
+              <li className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-blue-900/30 flex flex-shrink-0 items-center justify-center text-smd-gold border border-blue-800/30">
+                  <MapPin size={18} />
+                </div>
+                <div>
+                  <p className="text-white text-sm font-semibold mb-1">Campus Address</p>
+                  <p className="text-slate-400 text-sm leading-relaxed">Khori Brahmanan, Raghunathgarh,<br/>Sikar, Rajasthan 332027</p>
+                </div>
+              </li>
+              <li className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-xl bg-blue-900/30 flex flex-shrink-0 items-center justify-center text-smd-gold border border-blue-800/30">
+                  <Phone size={18} />
+                </div>
+                <div>
+                  <p className="text-white text-sm font-semibold mb-1">Phone Number</p>
+                  <a href="tel:+919001995272" className="text-slate-400 hover:text-smd-gold transition-colors text-sm block">+91 9001995272</a>
+                </div>
+              </li>
+              <li className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-xl bg-blue-900/30 flex flex-shrink-0 items-center justify-center text-smd-gold border border-blue-800/30">
+                  <Mail size={18} />
+                </div>
+                <div>
+                  <p className="text-white text-sm font-semibold mb-1">Email Address</p>
+                  <a href="mailto:smdvidyamandir@gmail.com" className="text-slate-400 hover:text-smd-gold transition-colors text-sm block">smdvidyamandir@gmail.com</a>
+                </div>
+              </li>
+            </ul>
           </div>
+
         </div>
-        <div className="border-t border-white/20 mt-10 pt-6 text-center text-sm text-white/50">
-          © {new Date().getFullYear()} SMD Digital Campus. Built by Jatin Kumar.
+
+        {/* Bottom Bar */}
+        <div className="pt-8 pb-4 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-slate-500 text-sm">
+            © {new Date().getFullYear()} SMD Vidya Mandir. All rights reserved.
+          </p>
+          <p className="text-slate-500 text-sm">
+            Designed & Built by <span className="text-slate-400 font-semibold">Jatin Kumar</span>
+          </p>
         </div>
       </div>
     </footer>

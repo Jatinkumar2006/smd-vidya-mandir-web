@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { to: '/academics',  label: 'Academics'  },
   { to: '/facilities', label: 'Facilities' },
   { to: '/gallery',    label: 'Gallery'    },
+  { to: '/careers',    label: 'Careers'    },
   { to: '/mpd',        label: 'MPD'        },
   { to: '/contact',    label: 'Contact'    },
 ]
@@ -38,10 +39,10 @@ export default function Navbar() {
       style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         height: '70px',
-        background: scrolled ? '#0a143c' : 'rgba(10,20,60,0.85)',
-        backdropFilter: 'blur(12px)',
+        background: '#0a143c',
+        backdropFilter: 'none',
         borderBottom: '1px solid rgba(255,255,255,0.08)',
-        boxShadow: scrolled ? '0 2px 20px rgba(0,0,0,0.3)' : 'none',
+        boxShadow: '0 2px 20px rgba(0,0,0,0.3)',
         transition: 'all 0.3s',
         display: 'flex', alignItems: 'center',
       }}
@@ -64,7 +65,7 @@ export default function Navbar() {
           }}
         />
 
-        {/* School name + subtitle — matches screenshot exactly */}
+        {/* School name + subtitle - matches screenshot exactly */}
         <div>
           <div style={{
             color: '#ffffff',
@@ -73,7 +74,7 @@ export default function Navbar() {
             lineHeight: 1.25,
             letterSpacing: '0.01em',
           }}>
-            SMD Digital Campus
+            SMD Vidya Mandir
           </div>
           <div style={{
             color: '#f59e0b',

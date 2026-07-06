@@ -13,7 +13,7 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] } }
 }
 
 const FACILITIES = [
@@ -59,8 +59,8 @@ export default function Facilities() {
   return (
     <>
       <Helmet>
-        <title>Facilities – SMD Digital Campus</title>
-        <meta name="description" content="Explore the facilities at SMD School — library, labs, digital classrooms, sports, and transportation." />
+        <title>Facilities – SMD Vidya Mandir</title>
+        <meta name="description" content="Explore the facilities at SMD School - library, labs, digital classrooms, sports, and transportation." />
       </Helmet>
 
       {/* Header */}

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { UserPlus, Search, Edit2, Trash2, X, Check } from 'lucide-react'
+import { UserPlus, Search, Edit2, Trash2, X, Check, FileSpreadsheet } from 'lucide-react'
 import api from '@/services/api'
 import toast from 'react-hot-toast'
+import Papa from 'papaparse'
 
 const C = { navy: '#0a143c', gold: '#f59e0b', white: '#ffffff', bg: '#f7f9ff', border: '#e5e7eb', text: '#0a143c', muted: '#6b7280' }
 
@@ -42,6 +43,29 @@ export default function AdminStudents() {
     setEditId(s.id); setShowModal(true)
   }
 
+  const handleBulkUpload = (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: async (results) => {
+        setSaving(true)
+        const loadingToast = toast.loading('Uploading students...')
+        try {
+          const res = await api.post('/students/bulk', { students: results.data })
+          toast.success(res.data.message || 'Bulk upload successful', { id: loadingToast })
+          load()
+        } catch (err) {
+          toast.error(err.response?.data?.message || 'Bulk upload failed', { id: loadingToast })
+        } finally {
+          setSaving(false)
+          e.target.value = null // reset input
+        }
+      }
+    })
+  }
+
   const handleSave = async (e) => {
     e.preventDefault(); setSaving(true)
     try {
@@ -67,17 +91,27 @@ export default function AdminStudents() {
 
   return (
     <>
-      <Helmet><title>Students – Admin – SMD Digital Campus</title></Helmet>
+      <Helmet><title>Students – Admin – SMD Vidya Mandir</title></Helmet>
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: 12 }}>
         <h1 style={{ fontSize: '1.6rem', fontWeight: 700, color: C.navy }}>Students</h1>
-        <button onClick={openAdd} style={{
-          background: C.gold, color: C.navy, fontWeight: 700, fontSize: 14,
-          padding: '10px 20px', borderRadius: 10, border: 'none', cursor: 'pointer',
-          display: 'flex', alignItems: 'center', gap: 8,
-        }}>
-          <UserPlus size={16} /> Add Student
-        </button>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <input type="file" id="csv-upload" accept=".csv" style={{ display: 'none' }} onChange={handleBulkUpload} />
+          <button onClick={() => document.getElementById('csv-upload').click()} style={{
+            background: C.white, color: C.navy, fontWeight: 600, fontSize: 14,
+            padding: '10px 16px', borderRadius: 10, border: `1.5px solid ${C.border}`, cursor: 'pointer',
+            display: 'flex', alignItems: 'center', gap: 8,
+          }}>
+            <FileSpreadsheet size={16} /> Bulk Import CSV
+          </button>
+          <button onClick={openAdd} style={{
+            background: C.gold, color: C.navy, fontWeight: 700, fontSize: 14,
+            padding: '10px 20px', borderRadius: 10, border: 'none', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', gap: 8,
+          }}>
+            <UserPlus size={16} /> Add Student
+          </button>
+        </div>
       </div>
 
       {/* Filters */}
@@ -118,7 +152,7 @@ export default function AdminStudents() {
                 <td style={{ padding: '12px 16px', fontWeight: 500 }}>{s.name}</td>
                 <td style={{ padding: '12px 16px' }}>Class {s.class}{s.section && `-${s.section}`}</td>
                 <td style={{ padding: '12px 16px', color: C.muted }}>{s.email}</td>
-                <td style={{ padding: '12px 16px', color: C.muted }}>{s.phone || '—'}</td>
+                <td style={{ padding: '12px 16px', color: C.muted }}>{s.phone || '-'}</td>
                 <td style={{ padding: '12px 16px' }}>
                   <div style={{ display: 'flex', gap: 8 }}>
                     <button onClick={() => openEdit(s)} style={{ background: '#eff6ff', color: '#3b82f6', border: 'none', borderRadius: 8, padding: '6px 10px', cursor: 'pointer' }}>

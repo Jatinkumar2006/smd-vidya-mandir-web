@@ -18,14 +18,15 @@ router.get('/', protect, authorize('admin', 'teacher'), async (req, res) => {
     `
     const params = []
     const where  = []
-    if (student_id) { where.push('m.student_id = ?');  params.push(student_id) }
-    if (cls)        { where.push('s.class = ?');        params.push(cls) }
-    if (exam_type)  { where.push('m.exam_type = ?');    params.push(exam_type) }
-    if (subject)    { where.push('m.subject = ?');      params.push(subject) }
+    let paramIndex = 1
+    if (student_id) { where.push(`m.student_id = $${paramIndex++}`);  params.push(student_id) }
+    if (cls)        { where.push(`s.class = $${paramIndex++}`);        params.push(cls) }
+    if (exam_type)  { where.push(`m.exam_type = $${paramIndex++}`);    params.push(exam_type) }
+    if (subject)    { where.push(`m.subject = $${paramIndex++}`);      params.push(subject) }
     if (where.length) sql += ' WHERE ' + where.join(' AND ')
     sql += ' ORDER BY s.class, s.roll_number, m.subject'
 
-    const [rows] = await pool.query(sql, params)
+    const { rows } = await pool.query(sql, params)
     res.json(rows)
   } catch (err) {
     console.error(err)
@@ -36,13 +37,13 @@ router.get('/', protect, authorize('admin', 'teacher'), async (req, res) => {
 // GET /api/marks/my — student sees their own marks
 router.get('/my', protect, authorize('student'), async (req, res) => {
   try {
-    const [student] = await pool.query('SELECT id FROM students WHERE user_id = ?', [req.user.id])
+    const { rows: student } = await pool.query('SELECT id FROM students WHERE user_id = $1', [req.user.id])
     if (!student[0]) return res.status(404).json({ message: 'Student profile not found' })
 
-    const [rows] = await pool.query(
+    const { rows } = await pool.query(
       `SELECT m.*, t.name AS teacher_name FROM marks m
        LEFT JOIN users t ON t.id = m.teacher_id
-       WHERE m.student_id = ?
+       WHERE m.student_id = $1
        ORDER BY m.exam_type, m.subject`,
       [student[0].id]
     )
@@ -56,11 +57,11 @@ router.get('/my', protect, authorize('student'), async (req, res) => {
 router.post('/', protect, authorize('teacher', 'admin'), async (req, res) => {
   try {
     const { student_id, subject, exam_type, marks: marksVal, max_marks } = req.body
-    const [result] = await pool.query(
-      'INSERT INTO marks (student_id, subject, exam_type, marks, max_marks, teacher_id) VALUES (?, ?, ?, ?, ?, ?)',
+    const { rows } = await pool.query(
+      'INSERT INTO marks (student_id, subject, exam_type, marks, max_marks, teacher_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
       [student_id, subject, exam_type, marksVal, max_marks || 100, req.user.id]
     )
-    res.status(201).json({ message: 'Marks saved', id: result.insertId })
+    res.status(201).json({ message: 'Marks saved', id: rows[0].id })
   } catch (err) {
     console.error(err)
     res.status(500).json({ message: 'Server error' })
@@ -71,7 +72,7 @@ router.post('/', protect, authorize('teacher', 'admin'), async (req, res) => {
 router.put('/:id', protect, authorize('teacher', 'admin'), async (req, res) => {
   try {
     const { marks: marksVal, max_marks } = req.body
-    await pool.query('UPDATE marks SET marks = ?, max_marks = ? WHERE id = ?',
+    await pool.query('UPDATE marks SET marks = $1, max_marks = $2 WHERE id = $3',
       [marksVal, max_marks || 100, req.params.id])
     res.json({ message: 'Updated' })
   } catch (err) {
@@ -82,7 +83,7 @@ router.put('/:id', protect, authorize('teacher', 'admin'), async (req, res) => {
 // DELETE /api/marks/:id — admin only
 router.delete('/:id', protect, authorize('admin'), async (req, res) => {
   try {
-    await pool.query('DELETE FROM marks WHERE id = ?', [req.params.id])
+    await pool.query('DELETE FROM marks WHERE id = $1', [req.params.id])
     res.json({ message: 'Deleted' })
   } catch (err) {
     res.status(500).json({ message: 'Server error' })
