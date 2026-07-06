@@ -292,7 +292,7 @@ export default function Home() {
             </motion.p>
             <motion.p variants={heroItemVariants} style={{ color: '#4b5563', lineHeight: 1.82, marginBottom: '20px', fontSize: '15px' }}>
               We believe every child carries a unique spark. Our experienced faculty,
-              digital learning tools, and nurturing environment help students discover
+              digital learning tools and nurturing environment help students discover
               and develop their full potential.
             </motion.p>
             {/* Motto box */}

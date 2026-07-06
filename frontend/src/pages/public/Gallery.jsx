@@ -20,7 +20,7 @@ const CATEGORIES = ['All', 'Events', 'Sports', 'Cultural', 'Campus']
 
 const GALLERY_ITEMS = [
   { id: 1,  category: 'Events',   title: 'Annual Day 2024',          src: '/gallery/annual-day.png',         desc: 'Students celebrate the Annual Day with vibrant performances and prize distribution.' },
-  { id: 2,  category: 'Sports',   title: 'Sports Day 2024',          src: '/gallery/sports-day.png',         desc: 'Annual Sports Day featuring track events, team sports, and athletics.' },
+  { id: 2,  category: 'Sports',   title: 'Sports Day 2024',          src: '/gallery/sports-day.png',         desc: 'Annual Sports Day featuring track events, team sports and athletics.' },
   { id: 3,  category: 'Cultural', title: 'Republic Day Celebration', src: '/gallery/republic-day.png',       desc: 'Proud moments as students honor Republic Day with flag hoisting and march past.' },
   { id: 4,  category: 'Campus',   title: 'Digital Classrooms',       src: '/gallery/classroom.png',          desc: 'State-of-the-art classrooms equipped with projectors and digital boards.' },
   { id: 5,  category: 'Campus',   title: 'Science Laboratory',       src: '/gallery/science-lab.png',        desc: 'Well-equipped science labs where students explore and experiment.' },

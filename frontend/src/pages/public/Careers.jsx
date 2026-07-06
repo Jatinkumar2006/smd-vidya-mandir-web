@@ -154,7 +154,7 @@ export default function Careers() {
         <section className="mb-20">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-smd-blue mb-4">Why Join SMD Vidya Mandir?</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">We are always looking for passionate, innovative, and dedicated individuals to join our mission of providing holistic education.</p>
+            <p className="text-slate-600 max-w-2xl mx-auto">We are always looking for passionate, innovative and dedicated individuals to join our mission of providing holistic education.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {benefits.map((b, i) => (

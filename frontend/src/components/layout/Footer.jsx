@@ -18,7 +18,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
-              Empowering students through holistic education, cutting-edge facilities, and a deep respect for core values since our foundation.
+              Empowering students through holistic education, cutting-edge facilities and a deep respect for core values since our foundation.
             </p>
             <div className="flex items-center gap-3 pt-2">
               <a href="https://www.youtube.com/@SMDsikar" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-300 hover:bg-smd-blue hover:text-white transition-colors" aria-label="YouTube Channel">

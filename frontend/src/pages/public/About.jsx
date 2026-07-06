@@ -54,7 +54,7 @@ export default function About() {
           <motion.p variants={itemVariants} style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '10px' }}>Who We Are</motion.p>
           <motion.h1 variants={itemVariants} style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 900, color: '#fff', marginBottom: '16px' }}>About Our School</motion.h1>
           <motion.p variants={itemVariants} style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '560px', lineHeight: 1.75 }}>
-            A legacy of quality education, values, and holistic development since 2009 in Raghunathgarh, Sikar.
+            A legacy of quality education, values and holistic development since 2009 in Raghunathgarh, Sikar.
           </motion.p>
         </motion.div>
       </div>
@@ -102,14 +102,14 @@ export default function About() {
               <div style={{ fontSize: '36px', marginBottom: '16px' }}>🔭</div>
               <h3 style={{ fontFamily: "'Merriweather',serif", fontSize: '1.3rem', fontWeight: 700, color: '#f59e0b', marginBottom: '14px' }}>Our Vision</h3>
               <p style={{ color: 'rgba(255,255,255,0.78)', lineHeight: 1.8, fontSize: '15px' }}>
-                To be a premier educational institution that empowers every student with knowledge, values, and skills to become responsible global citizens - while staying rooted in Indian culture and tradition.
+                To be a premier educational institution that empowers every student with knowledge, values and skills to become responsible global citizens - while staying rooted in Indian culture and tradition.
               </p>
             </motion.div>
             <motion.div variants={itemVariants} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '18px', padding: '36px' }}>
               <div style={{ fontSize: '36px', marginBottom: '16px' }}>🎯</div>
               <h3 style={{ fontFamily: "'Merriweather',serif", fontSize: '1.3rem', fontWeight: 700, color: '#0a143c', marginBottom: '14px' }}>Our Mission</h3>
               <p style={{ color: '#4b5563', lineHeight: 1.8, fontSize: '15px' }}>
-                To provide a nurturing, inclusive, and technology-enabled learning environment where students develop critical thinking, creativity, and character - achieving academic excellence while growing as compassionate human beings.
+                To provide a nurturing, inclusive and technology-enabled learning environment where students develop critical thinking, creativity and character - achieving academic excellence while growing as compassionate human beings.
               </p>
             </motion.div>
           </div>

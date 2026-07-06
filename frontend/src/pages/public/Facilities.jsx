@@ -19,7 +19,7 @@ const itemVariants = {
 const FACILITIES = [
   {
     icon: '📚', title: 'Library',
-    desc: 'A well-stocked library with hundreds of books, encyclopaedias, newspapers, and magazines. Students are encouraged to develop a reading habit from an early age.',
+    desc: 'A well-stocked library with hundreds of books, encyclopaedias, newspapers and magazines. Students are encouraged to develop a reading habit from an early age.',
     tags: ['Books & Reference', 'Newspapers', 'Reading Space'],
   },
   {
