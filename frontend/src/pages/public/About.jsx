@@ -2,8 +2,8 @@ import { Helmet } from 'react-helmet-async'
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import buildingImg from '@/assets/images/building.jpg'
-import logoImg from '@/assets/images/logo.png'
+import buildingImg from '@/assets/images/building.webp'
+import logoImg from '@/assets/images/logo.webp'
 
 const containerVariants = {
   hidden: { opacity: 0 },

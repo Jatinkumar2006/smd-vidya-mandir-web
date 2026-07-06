@@ -5,8 +5,8 @@ import { Phone, ArrowRight, BookOpen, Monitor, Trophy, Zap } from 'lucide-react'
 import { motion } from 'framer-motion'
 import CountUp from 'react-countup'
 
-import buildingImg from '@/assets/images/building.jpg'
-import logoImg     from '@/assets/images/logo.png'
+import buildingImg from '@/assets/images/building.webp'
+import logoImg     from '@/assets/images/logo.webp'
 import VanillaTilt from 'vanilla-tilt'
 
 // ── Data ─────────────────────────────────────────────────
@@ -42,10 +42,10 @@ const FEATURES = [
 ]
 
 const NOTICES = [
+  { day: '15', month: 'Aug', tag: '🎉 Event',        title: 'Independence Day Celebrations - Flag Hoisting at 8:00 AM' },
+  { day: '05', month: 'Sep', tag: '📅 Holiday',      title: 'Teacher’s Day - Half Day for Students'                    },
+  { day: '10', month: 'Oct', tag: '📝 Exam',         title: 'Half-Yearly Examinations Begin'                           },
   { day: '25', month: 'Jun', tag: '📢 Announcement', title: 'Admissions Open for Session 2025–26 - All Classes'      },
-  { day: '20', month: 'Jun', tag: '📅 Holiday',      title: 'Summer break revised - School resumes July 1'           },
-  { day: '15', month: 'Jun', tag: '📝 Exam',         title: 'Pre-board timetable released for Class X & XII'         },
-  { day: '10', month: 'Jun', tag: '🎉 Event',        title: 'Annual Sports Day - Highlights and results published'    },
 ]
 
 const QUICK_LINKS = [
@@ -162,12 +162,12 @@ export default function Home() {
           {/* Badge */}
           <motion.div variants={heroItemVariants} style={{
             display: 'inline-flex', alignItems: 'center', gap: '8px',
-            border: '1px solid rgba(245,158,11,0.5)', background: 'rgba(245,158,11,0.12)',
-            color: '#fcd34d', fontSize: '11.5px', fontWeight: 600,
+            border: '1px solid rgba(217,119,6,0.5)', background: 'rgba(180,83,9,0.2)',
+            color: '#fbbf24', fontSize: '11.5px', fontWeight: 600,
             letterSpacing: '0.12em', textTransform: 'uppercase',
             padding: '6px 16px', borderRadius: '100px', marginBottom: '22px',
           }}>
-            <span style={{ width: '6px', height: '6px', background: '#f59e0b', borderRadius: '50%', display: 'inline-block', flexShrink: 0 }} />
+            <span style={{ width: '6px', height: '6px', background: '#d97706', borderRadius: '50%', display: 'inline-block', flexShrink: 0 }} />
             CBSE Affiliated · Est. 2009 · Sikar
           </motion.div>
 

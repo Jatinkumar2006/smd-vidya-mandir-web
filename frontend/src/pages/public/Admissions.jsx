@@ -145,7 +145,7 @@ export default function Admissions() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
                       <label style={labelStyle}>Student Name *</label>
-                      <input name="student_name" value={form.student_name} onChange={handle} required placeholder="Full name" style={inputStyle} onFocus={e => e.target.style.borderColor='#0a143c'} onBlur={e => e.target.style.borderColor='#e5e7eb'} />
+                      <input name="student_name" value={form.student_name} onChange={handle} required placeholder="Jatin Kumar Soni" style={inputStyle} onFocus={e => e.target.style.borderColor='#0a143c'} onBlur={e => e.target.style.borderColor='#e5e7eb'} />
                     </div>
                     <div>
                       <label style={labelStyle}>Date of Birth *</label>
@@ -176,7 +176,7 @@ export default function Admissions() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
                       <label style={labelStyle}>Parent Name *</label>
-                      <input name="parent_name" value={form.parent_name} onChange={handle} required placeholder="Full name" style={inputStyle} onFocus={e => e.target.style.borderColor='#0a143c'} onBlur={e => e.target.style.borderColor='#e5e7eb'} />
+                      <input name="parent_name" value={form.parent_name} onChange={handle} required placeholder="Jatin Kumar Soni" style={inputStyle} onFocus={e => e.target.style.borderColor='#0a143c'} onBlur={e => e.target.style.borderColor='#e5e7eb'} />
                     </div>
                     <div>
                       <label style={labelStyle}>Relation *</label>
@@ -188,11 +188,11 @@ export default function Admissions() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
                       <label style={labelStyle}>Phone Number *</label>
-                      <input name="phone" value={form.phone} onChange={handle} required placeholder="+91 9876543210" type="tel" style={inputStyle} onFocus={e => e.target.style.borderColor='#0a143c'} onBlur={e => e.target.style.borderColor='#e5e7eb'} />
+                      <input name="phone" value={form.phone} onChange={handle} required placeholder="+91 90239035XX" type="tel" style={inputStyle} onFocus={e => e.target.style.borderColor='#0a143c'} onBlur={e => e.target.style.borderColor='#e5e7eb'} />
                     </div>
                     <div>
                       <label style={labelStyle}>Email Address</label>
-                      <input name="email" value={form.email} onChange={handle} placeholder="optional" type="email" style={inputStyle} onFocus={e => e.target.style.borderColor='#0a143c'} onBlur={e => e.target.style.borderColor='#e5e7eb'} />
+                      <input name="email" value={form.email} onChange={handle} placeholder="example@gmail.com" type="email" style={inputStyle} onFocus={e => e.target.style.borderColor='#0a143c'} onBlur={e => e.target.style.borderColor='#e5e7eb'} />
                     </div>
                   </div>
                   <div>

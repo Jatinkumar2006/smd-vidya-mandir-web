@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Phone, Mail, MapPin, Youtube, Facebook, Instagram, ArrowRight } from 'lucide-react'
-import logo from '../../assets/images/logo.png'
+import logo from '../../assets/images/logo.webp'
 
 export default function Footer() {
   return (
@@ -21,14 +21,14 @@ export default function Footer() {
               Empowering students through holistic education, cutting-edge facilities, and a deep respect for core values since our foundation.
             </p>
             <div className="flex items-center gap-3 pt-2">
-              <a href="https://www.youtube.com/@SMDsikar" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:bg-[#ff0000] hover:text-white hover:border-transparent transition-all duration-300">
-                <Youtube size={18} />
+              <a href="https://www.youtube.com/@SMDsikar" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-300 hover:bg-smd-blue hover:text-white transition-colors" aria-label="YouTube Channel">
+                <Youtube size={20} />
               </a>
-              <a href="https://www.facebook.com/SMDVidyaMandirCBSE/" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:bg-[#1877F2] hover:text-white hover:border-transparent transition-all duration-300">
-                <Facebook size={18} />
+              <a href="https://www.facebook.com/SMDVidyaMandirCBSE/" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-300 hover:bg-smd-blue hover:text-white transition-colors" aria-label="Facebook Page">
+                <Facebook size={20} />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:bg-[#E1306C] hover:text-white hover:border-transparent transition-all duration-300">
-                <Instagram size={18} />
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-300 hover:bg-smd-blue hover:text-white transition-colors" aria-label="Instagram Page">
+                <Instagram size={20} />
               </a>
             </div>
           </div>
@@ -95,8 +95,8 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 pb-4 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-slate-500 text-sm">
-            © {new Date().getFullYear()} SMD Vidya Mandir. All rights reserved.
+          <p className="text-slate-400 text-sm text-center md:text-left">
+            © 2026 SMD Vidya Mandir. All rights reserved.
           </p>
           <p className="text-slate-500 text-sm">
             Designed & Built by <span className="text-slate-400 font-semibold">Jatin Kumar</span>

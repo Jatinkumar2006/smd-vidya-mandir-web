@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useAuth } from '@/context/AuthContext'
 import { GraduationCap, Eye, EyeOff, AlertCircle } from 'lucide-react'
+import logoImg from '@/assets/images/logo.webp'
 import toast from 'react-hot-toast'
 
 const DEMO = [
@@ -83,7 +84,7 @@ export default function Login() {
                   Email Address
                 </label>
                 <input
-                  type="email" required placeholder="you@smdschool.in"
+                  type="email" required placeholder="example@gmail.com"
                   value={form.email}
                   onChange={e => setForm({ ...form, email: e.target.value })}
                   onFocus={() => setFocused('email')}

@@ -119,7 +119,7 @@ export default function Contact() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
                   <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#374151', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Your Name *</label>
-                  <input name="name" value={form.name} onChange={handle} required placeholder="Ramesh Kumar"
+                  <input name="name" value={form.name} onChange={handle} required placeholder="Jatin Kumar Soni"
                     style={{ width: '100%', padding: '11px 14px', border: '1.5px solid #e5e7eb', borderRadius: '10px', fontSize: '14px', outline: 'none', background: '#fff', boxSizing: 'border-box' }}
                     onFocus={e => e.target.style.borderColor = '#0a143c'}
                     onBlur={e => e.target.style.borderColor = '#e5e7eb'}
@@ -127,7 +127,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#374151', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Phone Number *</label>
-                  <input name="phone" value={form.phone} onChange={handle} required placeholder="+91 9876543210" type="tel"
+                  <input name="phone" value={form.phone} onChange={handle} required placeholder="+91 90239035XX" type="tel"
                     style={{ width: '100%', padding: '11px 14px', border: '1.5px solid #e5e7eb', borderRadius: '10px', fontSize: '14px', outline: 'none', background: '#fff', boxSizing: 'border-box' }}
                     onFocus={e => e.target.style.borderColor = '#0a143c'}
                     onBlur={e => e.target.style.borderColor = '#e5e7eb'}
@@ -137,7 +137,7 @@ export default function Contact() {
 
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#374151', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Email Address</label>
-                <input name="email" value={form.email} onChange={handle} placeholder="you@example.com" type="email"
+                <input name="email" value={form.email} onChange={handle} placeholder="example@gmail.com" type="email"
                   style={{ width: '100%', padding: '11px 14px', border: '1.5px solid #e5e7eb', borderRadius: '10px', fontSize: '14px', outline: 'none', background: '#fff', boxSizing: 'border-box' }}
                   onFocus={e => e.target.style.borderColor = '#0a143c'}
                   onBlur={e => e.target.style.borderColor = '#e5e7eb'}

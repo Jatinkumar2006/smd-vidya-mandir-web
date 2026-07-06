@@ -85,7 +85,7 @@ export default function Careers() {
 
       // 2. Initialize Razorpay Options
       const options = {
-        key: 'rzp_test_dummy_key', // This will be handled securely in production
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_dummy_key',
         amount: order.amount,
         currency: order.currency,
         name: 'SMD Vidya Mandir',
@@ -298,16 +298,16 @@ export default function Careers() {
 
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
-                    <input required type="text" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-smd-blue/20 focus:border-smd-blue" placeholder="John Doe" value={formData.applicant_name} onChange={e => setFormData({...formData, applicant_name: e.target.value})} />
+                    <input required type="text" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-smd-blue/20 focus:border-smd-blue" placeholder="Jatin Kumar Soni" value={formData.applicant_name} onChange={e => setFormData({...formData, applicant_name: e.target.value})} />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
-                      <input required type="email" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-smd-blue/20 focus:border-smd-blue" placeholder="john@example.com" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
+                      <input required type="email" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-smd-blue/20 focus:border-smd-blue" placeholder="example@gmail.com" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1">Phone Number</label>
-                      <input required type="tel" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-smd-blue/20 focus:border-smd-blue" placeholder="+91 98765 43210" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
+                      <input required type="tel" className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-smd-blue/20 focus:border-smd-blue" placeholder="+91 90239035XX" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
                     </div>
                   </div>
                   <div>
