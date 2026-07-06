@@ -211,7 +211,7 @@ export default function Careers() {
                     </div>
                     {job.description && <p className="mt-3 text-slate-600 text-sm max-w-2xl">{job.description}</p>}
                   </div>
-                  <button onClick={() => handleApplyClick(job)} className="shrink-0 bg-smd-blue text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-800 transition-colors flex items-center gap-2">
+                  <button onClick={() => handleApplyClick(job)} className="shrink-0 bg-smd-blue text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-800 transition-colors flex items-center justify-center gap-2">
                     Apply Now <ArrowRight size={16} />
                   </button>
                 </motion.div>

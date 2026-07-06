@@ -26,10 +26,24 @@ const MENUS = {
   ],
 }
 
-export default function Sidebar({ role }) {
+export default function Sidebar({ role, isOpen, setIsOpen }) {
   const items = MENUS[role] || []
   return (
-    <aside className="w-60 bg-smd-blue text-white flex flex-col min-h-screen shrink-0">
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+      
+      <aside className={`
+        fixed md:static inset-y-0 left-0 z-50
+        w-60 bg-smd-blue text-white flex flex-col min-h-screen shrink-0
+        transition-transform duration-300 ease-in-out
+        ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+      `}>
       <div className="flex items-center gap-2 px-6 py-5 border-b border-white/20">
         <GraduationCap size={24} className="text-smd-gold" />
         <span className="font-bold text-sm">SMD Campus</span>
@@ -40,6 +54,7 @@ export default function Sidebar({ role }) {
             key={to}
             to={to}
             end
+            onClick={() => setIsOpen?.(false)}
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 isActive ? 'bg-white/20 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'
@@ -51,6 +66,7 @@ export default function Sidebar({ role }) {
           </NavLink>
         ))}
       </nav>
-    </aside>
+      </aside>
+    </>
   )
 }
