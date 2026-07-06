@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Phone, Mail, MapPin, Youtube, Facebook, Instagram, ArrowRight } from 'lucide-react'
+import { Phone, Mail, MapPin, Youtube, Facebook, ArrowRight } from 'lucide-react'
 import logo from '../../assets/images/logo.webp'
 
 export default function Footer() {
@@ -26,9 +26,6 @@ export default function Footer() {
               </a>
               <a href="https://www.facebook.com/SMDVidyaMandirCBSE/" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-300 hover:bg-smd-blue hover:text-white transition-colors" aria-label="Facebook Page">
                 <Facebook size={20} />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-300 hover:bg-smd-blue hover:text-white transition-colors" aria-label="Instagram Page">
-                <Instagram size={20} />
               </a>
             </div>
           </div>
