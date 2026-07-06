@@ -1,0 +1,14 @@
+# SMD Vidya Mandir
+
+Welcome to the official website of Shree Mangal Chand Didwania Vidya Mandir.
+We are a CBSE-affiliated school located in Sikar, Rajasthan, established in 2009.
+
+## Important Links
+- [Admissions](/admissions)
+- [About Us](/about)
+- [Academics](/academics)
+- [Contact](/contact)
+
+## Contact Information
+- Phone: +91-9001995272
+- Email: smdvidyamandir@gmail.com
