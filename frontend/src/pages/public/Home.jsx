@@ -136,7 +136,7 @@ export default function Home() {
         {/* Parallax background */}
         <div
           ref={heroBgRef}
-          className="absolute inset-0 bg-cover bg-[80%_center] md:bg-[center_25%]"
+          className="absolute inset-0 bg-cover bg-[80%_100%] md:bg-[center_25%]"
           style={{
             backgroundImage: `url(${buildingImg})`,
             willChange: 'transform',
@@ -156,7 +156,7 @@ export default function Home() {
           variants={heroContainerVariants}
           initial="hidden"
           animate="visible"
-          className="relative z-10 px-4 md:px-16 max-w-[700px]"
+          className="relative z-10 px-4 md:px-16 max-w-[700px] mt-60 md:mt-0"
         >
 
           {/* Badge */}
@@ -257,7 +257,7 @@ export default function Home() {
             <img
               src={buildingImg}
               alt="SMD School Building"
-              style={{ width: '100%', height: '400px', objectFit: 'cover', borderRadius: '18px', boxShadow: '0 24px 64px rgba(10,20,60,0.16)', display: 'block' }}
+              style={{ width: '100%', height: '400px', objectFit: 'cover', objectPosition: '85% center', borderRadius: '18px', boxShadow: '0 24px 64px rgba(10,20,60,0.16)', display: 'block' }}
             />
             <div style={{
               position: 'absolute', bottom: '-18px', right: '-18px',
