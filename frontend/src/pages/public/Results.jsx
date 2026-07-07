@@ -5,6 +5,21 @@ import { Trophy, ChevronDown, ChevronUp, Star, Award } from 'lucide-react'
 import api from '@/services/api'
 import PageHeader from '@/components/common/PageHeader'
 
+const MOCK_RESULTS = [
+  { id: 1, student_name: 'Aarav Sharma', year: 2026, class: '12th Science', score: '98.5%', description: 'District Topper (PCM)', photo_url: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&h=200&fit=crop' },
+  { id: 2, student_name: 'Ananya Singh', year: 2026, class: '10th Standard', score: '98.4%', description: '', photo_url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&h=200&fit=crop' },
+  { id: 3, student_name: 'Eshaan Gupta', year: 2026, class: '12th Science', score: '97.2%', description: 'School Topper', photo_url: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&h=200&fit=crop' },
+  { id: 4, student_name: 'Priya Patel', year: 2026, class: '12th Commerce', score: '96.8%', description: '', photo_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop' },
+  { id: 5, student_name: 'Krish Kumar', year: 2026, class: '10th Standard', score: '96.5%', description: '', photo_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop' },
+  { id: 6, student_name: 'Divya Verma', year: 2026, class: '12th Arts', score: '95.9%', description: 'Subject Topper (History)', photo_url: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=200&h=200&fit=crop' },
+  { id: 7, student_name: 'Rohan Mehta', year: 2026, class: '12th Science', score: '95.5%', description: '', photo_url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop' },
+  { id: 8, student_name: 'Sanya Kapoor', year: 2026, class: '10th Standard', score: '94.8%', description: '', photo_url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop' },
+  { id: 9, student_name: 'Kabir Das', year: 2026, class: '12th Commerce', score: '94.2%', description: '', photo_url: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=200&h=200&fit=crop' },
+  { id: 10, student_name: 'Aditi Joshi', year: 2026, class: '10th Standard', score: '93.7%', description: '', photo_url: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop' },
+  { id: 11, student_name: 'Devansh Roy', year: 2026, class: '12th Science', score: '92.9%', description: '', photo_url: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=200&h=200&fit=crop' },
+  { id: 12, student_name: 'Meera Rajput', year: 2026, class: '12th Arts', score: '92.4%', description: '', photo_url: 'https://images.unsplash.com/photo-1517365830460-955ce3ccd263?w=200&h=200&fit=crop' },
+]
+
 export default function Results() {
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(true)
@@ -14,15 +29,19 @@ export default function Results() {
     const fetchResults = async () => {
       try {
         const { data } = await api.get('/results')
-        setResults(data)
+        // If API succeeds but returns empty array (or works locally), fallback to MOCK_RESULTS for the presentation
+        const finalData = data.length > 0 ? data : MOCK_RESULTS;
+        setResults(finalData)
         
         // Group and find latest year to expand it by default
-        const years = [...new Set(data.map(r => r.year))].sort((a, b) => b - a)
+        const years = [...new Set(finalData.map(r => r.year))].sort((a, b) => b - a)
         if (years.length > 0) {
           setExpandedYears({ [years[0]]: true })
         }
       } catch (err) {
-        console.error('Failed to fetch results', err)
+        console.warn('API unavailable on Vercel, using hardcoded results for presentation.')
+        setResults(MOCK_RESULTS)
+        setExpandedYears({ [MOCK_RESULTS[0].year]: true })
       } finally {
         setLoading(false)
       }
