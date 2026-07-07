@@ -19,7 +19,7 @@ const itemVariants = {
 }
 
 const TEAM = [
-  { name: 'Shri Mangal Chand Didwania', role: 'Founder & Chairman', initial: 'M' },
+  { name: 'Shri Mangalchand Didwaniya', role: 'Founder & Chairman', initial: 'M' },
   { name: 'Principal',                   role: 'Academic Head',      initial: 'P' },
   { name: 'Vice Principal',              role: 'Administration',     initial: 'V' },
 ]
@@ -42,7 +42,7 @@ export default function About() {
     <>
       <Helmet>
         <title>About Us – SMD Vidya Mandir</title>
-        <meta name="description" content="Learn about Shree Mangal Chand Didwania Vidya Mandir - our history, vision, mission and leadership." />
+        <meta name="description" content="Learn about Shri Mangalchand Didwaniya Vidya Mandir - our history, vision, mission and leadership." />
       </Helmet>
 
       {/* Page Header */}
@@ -76,7 +76,7 @@ export default function About() {
               15+ Years of Shaping Young Minds
             </motion.h2>
             <motion.p variants={itemVariants} style={{ color: '#4b5563', lineHeight: 1.82, marginBottom: '14px', fontSize: '15px' }}>
-              Shree Mangal Chand Didwania Vidya Mandir was established in 2009 with a single vision - to provide world-class CBSE education to students in rural Rajasthan. What started as a small school has grown into a thriving institution serving 500+ students.
+              Shri Mangalchand Didwaniya Vidya Mandir was established in 2009 with a single vision - to provide world-class CBSE education to students in rural Rajasthan. What started as a small school has grown into a thriving institution serving 500+ students.
             </motion.p>
             <motion.p variants={itemVariants} style={{ color: '#4b5563', lineHeight: 1.82, marginBottom: '24px', fontSize: '15px' }}>
               Affiliated to CBSE and located in Khori Brahmanan, Raghunathgarh, we have consistently produced outstanding results while ensuring every child receives individual attention and holistic development.

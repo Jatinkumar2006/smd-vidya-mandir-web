@@ -133,7 +133,7 @@ export default function Home() {
         <title>SMD Vidya Mandir – Best CBSE School in Sikar, Rajasthan</title>
         <meta
           name="description"
-          content="Shree Mangal Chand Didwania Vidya Mandir – CBSE affiliated school in Raghunathgarh, Sikar. Admissions open for 2025–26."
+          content="Shri Mangalchand Didwaniya Vidya Mandir – CBSE affiliated school in Raghunathgarh, Sikar. Admissions open for 2025–26."
         />
       </Helmet>
 
@@ -181,8 +181,8 @@ export default function Home() {
 
           {/* Title */}
           <motion.h1 variants={heroItemVariants} className="font-serif text-3xl md:text-5xl lg:text-[3.4rem] font-black text-white leading-[1.18] mb-3">
-            Shree Mangal Chand
-            <span className="text-amber-500 block">Didwania Vidya Mandir</span>
+            Shri Mangalchand
+            <span className="text-amber-500 block">Didwaniya Vidya Mandir</span>
           </motion.h1>
 
           {/* Motto */}
@@ -294,7 +294,7 @@ export default function Home() {
               A Place Where Knowledge Meets Character
             </motion.h2>
             <motion.p variants={heroItemVariants} style={{ color: '#4b5563', lineHeight: 1.82, marginBottom: '14px', fontSize: '15px' }}>
-              Shree Mangal Chand Didwania Vidya Mandir has been a cornerstone of quality
+              Shri Mangalchand Didwaniya Vidya Mandir has been a cornerstone of quality
               education in Raghunathgarh, Sikar since 2009. Our CBSE-affiliated curriculum
               blends academic rigour with holistic development.
             </motion.p>
