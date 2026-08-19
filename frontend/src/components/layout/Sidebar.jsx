@@ -1,0 +1,62 @@
+import { NavLink } from 'react-router-dom'
+import { LayoutDashboard, Users, UserPlus, BookOpen, Calendar, Bell, Image, FileText, BarChart2, GraduationCap, Briefcase, Folder, Trophy, Award, Settings } from 'lucide-react'
+import logo from '../../assets/images/logo.webp'
+
+const MENUS = {
+  admin:   [
+    { to: '/admin',             icon: LayoutDashboard, label: 'Dashboard' },
+    { to: '/admin/admissions',  icon: FileText,        label: 'Admissions' },
+    { to: '/admin/results',     icon: Trophy,          label: 'Top Results' },
+    { to: '/admin/notices',     icon: Bell,            label: 'Notices' },
+    { to: '/admin/gallery',     icon: Image,           label: 'Gallery' },
+    { to: '/admin/leadership',  icon: Users,           label: 'Leadership' },
+    { to: '/admin/careers',     icon: Briefcase,       label: 'Careers' },
+    { to: '/admin/documents',   icon: Folder,          label: 'MPD Documents' },
+    { to: '/admin/settings',    icon: Settings,        label: 'Settings' },
+  ],
+}
+
+export default function Sidebar({ role, isOpen, setIsOpen }) {
+  const items = MENUS[role] || []
+  return (
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+      
+      <aside className={`
+        fixed md:static inset-y-0 left-0 z-50
+        w-60 bg-smd-blue text-white flex flex-col min-h-screen shrink-0
+        transition-transform duration-300 ease-in-out
+        ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+      `}>
+      <div className="flex items-center gap-3 px-6 py-5 border-b border-white/20">
+        <img src={logo} alt="SMD Logo" className="w-8 h-8 object-contain" />
+        <span className="font-bold text-sm leading-tight">SMD Vidya<br/>Mandir</span>
+      </div>
+      <nav className="flex-1 px-3 py-4 space-y-1">
+        {items.map(({ to, icon: Icon, label }) => (
+          <NavLink
+            key={to}
+            to={to}
+            end
+            onClick={() => setIsOpen?.(false)}
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                isActive ? 'bg-white/20 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'
+              }`
+            }
+          >
+            <Icon size={18} />
+            {label}
+          </NavLink>
+        ))}
+      </nav>
+      </aside>
+    </>
+  )
+}

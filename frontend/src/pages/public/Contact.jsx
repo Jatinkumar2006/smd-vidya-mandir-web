@@ -1,0 +1,210 @@
+import { useState } from 'react'
+import { Helmet } from 'react-helmet-async'
+import { Phone, Mail, MapPin, Clock, Youtube, Facebook } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { useSettings } from '@/context/SettingsContext'
+import api from '@/services/api'
+import toast from 'react-hot-toast'
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] } }
+}
+
+const WhatsAppIcon = ({ size, color }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+  </svg>
+)
+
+
+/**
+ * Contact Page Component.
+ * Displays contact information, a Google Map embed, and a contact form.
+ */
+export default function Contact() {
+  // ── Form State ──
+  // Manages the state of the contact form inputs (name, email, phone, message).
+  const [form, setForm]     = useState({ name: '', email: '', phone: '', subject: '', message: '' })
+  const [loading, setLoading] = useState(false)
+  const { settings } = useSettings()
+
+  const handle = e => setForm({ ...form, [e.target.name]: e.target.value })
+
+  const submit = async e => {
+    e.preventDefault()
+    setLoading(true)
+    try {
+      await api.post('/contact', form)
+      toast.success('Message sent! We\'ll get back to you soon.')
+      setForm({ name: '', email: '', phone: '', subject: '', message: '' })
+    } catch {
+      toast.error('Failed to send. Please call us directly.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <>
+      <Helmet>
+        <title>Contact Us – SMD Vidya Mandir</title>
+        <meta name="description" content="Contact SMD School Sikar - phone, email, address, and online inquiry form." />
+      </Helmet>
+
+      {/* Header */}
+      <div className="responsive-header relative overflow-hidden" style={{ background: 'linear-gradient(110deg,#0a143c 0%,#1a3aad 100%)' }}>
+        <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
+        <motion.div initial="hidden" animate="visible" variants={containerVariants} style={{ maxWidth: '1160px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
+          <motion.p variants={itemVariants} style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '10px' }}>Get in Touch</motion.p>
+          <motion.h1 variants={itemVariants} style={{ fontFamily: "'Merriweather',serif", fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 900, color: '#fff', marginBottom: '16px' }}>Contact Us</motion.h1>
+          <motion.p variants={itemVariants} style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '560px', lineHeight: 1.75 }}>
+            We'd love to hear from you. Reach out for admissions, general inquiries or to schedule a campus visit.
+          </motion.p>
+        </motion.div>
+      </div>
+
+      <section className="responsive-section">
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={containerVariants} className="responsive-contact-grid" style={{ maxWidth: '1160px', margin: '0 auto' }}>
+
+          {/* Left - Contact Info */}
+          <motion.div variants={itemVariants}>
+            <h2 style={{ fontFamily: "'Merriweather',serif", fontSize: '1.6rem', fontWeight: 700, color: '#0a143c', marginBottom: '28px' }}>School Information</h2>
+
+            {[
+              { icon: MapPin, label: 'Address',    value: 'Khori Brahmanan, Raghunathgarh,\nSikar, Rajasthan – 332027', href: null },
+              { icon: Phone,  label: 'Phone',      value: '+91 9001995272',           href: 'tel:+919001995272' },
+              { icon: WhatsAppIcon, label: 'WhatsApp', value: '+91 9001995272', href: 'https://wa.me/919001995272' },
+              { icon: Mail,   label: 'Email',      value: 'smdvidyamandir@gmail.com', href: 'mailto:smdvidyamandir@gmail.com' },
+              { icon: Clock,  label: 'School Hours', value: settings?.school_hours || 'Mon – Sat: 7:30 AM – 2:00 PM\nSunday: Closed', href: null },
+            ].map(({ icon: Icon, label, value, href }) => (
+              <div key={label} style={{ display: 'flex', gap: '16px', marginBottom: '24px', alignItems: 'flex-start' }}>
+                <div style={{ width: '44px', height: '44px', background: '#eff6ff', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Icon size={20} color="#1d4ed8" />
+                </div>
+                <div>
+                  <p style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#f59e0b', marginBottom: '6px' }}>{label}</p>
+                  {href ? (
+                    <a href={href} target={href.startsWith('http') ? '_blank' : undefined} rel="noreferrer"
+                      style={{ fontSize: '14.5px', color: '#0a143c', textDecoration: 'none', lineHeight: 1.6, whiteSpace: 'pre-line', fontWeight: 500 }}
+                      onMouseEnter={e => e.currentTarget.style.color = '#1d4ed8'}
+                      onMouseLeave={e => e.currentTarget.style.color = '#0a143c'}
+                    >{value}</a>
+                  ) : (
+                    <p style={{ fontSize: '14.5px', color: '#4b5563', lineHeight: 1.6, whiteSpace: 'pre-line' }}>{value}</p>
+                  )}
+                </div>
+              </div>
+            ))}
+
+            {/* Social */}
+            <div style={{ marginTop: '32px', paddingTop: '24px', borderTop: '1px solid #e5e7eb' }}>
+              <p style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#6b7280', marginBottom: '14px' }}>Follow Us</p>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <a href="https://www.youtube.com/@SMDsikar" target="_blank" rel="noreferrer"
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#fee2e2', color: '#dc2626', padding: '8px 16px', borderRadius: '8px', textDecoration: 'none', fontSize: '13px', fontWeight: 600 }}>
+                  <Youtube size={16} /> YouTube
+                </a>
+                <a href="https://www.facebook.com/SMDVidyaMandirCBSE/" target="_blank" rel="noreferrer"
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#dbeafe', color: '#1d4ed8', padding: '8px 16px', borderRadius: '8px', textDecoration: 'none', fontSize: '13px', fontWeight: 600 }}>
+                  <Facebook size={16} /> Facebook
+                </a>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Right - Inquiry Form */}
+          <motion.div variants={itemVariants} style={{ background: '#f7f9ff', borderRadius: '20px', padding: '40px', border: '1px solid #e5e7eb' }}>
+            <h2 style={{ fontFamily: "'Merriweather',serif", fontSize: '1.4rem', fontWeight: 700, color: '#0a143c', marginBottom: '6px' }}>Send us a Message</h2>
+            <p style={{ color: '#6b7280', fontSize: '13.5px', marginBottom: '28px' }}>We typically respond within 24 hours on working days.</p>
+
+            <form onSubmit={submit}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#374151', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Your Name *</label>
+                  <input name="name" value={form.name} onChange={handle} required placeholder="Jatin Kumar Soni"
+                    style={{ width: '100%', padding: '11px 14px', border: '1.5px solid #e5e7eb', borderRadius: '10px', fontSize: '14px', outline: 'none', background: '#fff', boxSizing: 'border-box' }}
+                    onFocus={e => e.target.style.borderColor = '#0a143c'}
+                    onBlur={e => e.target.style.borderColor = '#e5e7eb'}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#374151', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Phone Number *</label>
+                  <input name="phone" value={form.phone} onChange={handle} required placeholder="+91 90239035XX" type="tel"
+                    style={{ width: '100%', padding: '11px 14px', border: '1.5px solid #e5e7eb', borderRadius: '10px', fontSize: '14px', outline: 'none', background: '#fff', boxSizing: 'border-box' }}
+                    onFocus={e => e.target.style.borderColor = '#0a143c'}
+                    onBlur={e => e.target.style.borderColor = '#e5e7eb'}
+                  />
+                </div>
+              </div>
+
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#374151', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Email Address *</label>
+                <input name="email" value={form.email} onChange={handle} required placeholder="example@gmail.com" type="email"
+                  style={{ width: '100%', padding: '11px 14px', border: '1.5px solid #e5e7eb', borderRadius: '10px', fontSize: '14px', outline: 'none', background: '#fff', boxSizing: 'border-box' }}
+                  onFocus={e => e.target.style.borderColor = '#0a143c'}
+                  onBlur={e => e.target.style.borderColor = '#e5e7eb'}
+                />
+              </div>
+
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#374151', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Subject *</label>
+                <select name="subject" value={form.subject} onChange={handle} required
+                  style={{ width: '100%', padding: '11px 14px', border: '1.5px solid #e5e7eb', borderRadius: '10px', fontSize: '14px', outline: 'none', background: '#fff', boxSizing: 'border-box', color: form.subject ? '#111' : '#9ca3af' }}
+                  onFocus={e => e.target.style.borderColor = '#0a143c'}
+                  onBlur={e => e.target.style.borderColor = '#e5e7eb'}
+                >
+                  <option value="">Select a subject...</option>
+                  <option>Admission Inquiry</option>
+                  <option>Fee Structure</option>
+                  <option>Transport Information</option>
+                  <option>Academic Query</option>
+                  <option>General Inquiry</option>
+                </select>
+              </div>
+
+              <div style={{ marginBottom: '24px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#374151', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Message *</label>
+                <textarea name="message" value={form.message} onChange={handle} required placeholder="Write your message here..." rows={4}
+                  style={{ width: '100%', padding: '11px 14px', border: '1.5px solid #e5e7eb', borderRadius: '10px', fontSize: '14px', outline: 'none', background: '#fff', boxSizing: 'border-box', resize: 'vertical', fontFamily: 'inherit' }}
+                  onFocus={e => e.target.style.borderColor = '#0a143c'}
+                  onBlur={e => e.target.style.borderColor = '#e5e7eb'}
+                />
+              </div>
+
+              <button type="submit" disabled={loading} style={{ width: '100%', background: loading ? '#9ca3af' : '#f59e0b', color: '#0a143c', fontWeight: 700, fontSize: '14px', padding: '14px', borderRadius: '10px', border: 'none', cursor: loading ? 'not-allowed' : 'pointer', transition: 'all 0.2s' }}>
+                {loading ? 'Sending...' : 'Send Message →'}
+              </button>
+            </form>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* Map placeholder */}
+      <section className="responsive-section-bottom">
+        <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
+          <div style={{ borderRadius: '18px', overflow: 'hidden', border: '1px solid #e5e7eb', height: '400px', background: '#f7f9ff', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+            <iframe 
+              src="https://maps.google.com/maps?q=Shri%20Mangalchand%20Didwaniya%20Vidya%20Mandir,%20Khori%20Brahamnan,%20Sikar&t=&z=13&ie=UTF8&iwloc=&output=embed" 
+              width="100%" 
+              height="100%" 
+              style={{ border: 0, position: 'absolute', top: 0, left: 0 }} 
+              allowFullScreen="" 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Google Map"
+            />
+          </div>
+        </div>
+      </section>
+    </>
+  )
+}
